@@ -126,3 +126,16 @@ def registro(request):
         # print(form_user)
         # print(form_company)
     return render(request, 'designs/registro.html', {'form_user': form_user, 'form_company': form_company})
+
+
+def custom_login(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = authenticate(email=email, password=password)
+        if user:
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            company = Company.objects.get(owner=user)
+            return empresa(request, company.url)
+        else:
+            pass
