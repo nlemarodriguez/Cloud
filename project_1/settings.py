@@ -128,8 +128,9 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'designs.CustomUser'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # emaillogin_project/settings.py
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

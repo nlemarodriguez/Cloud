@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
@@ -10,7 +11,7 @@ class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
 
     def __str__(self):
-        return 'User email: %s' % self.email
+        return '%s' % self.email
 
 
 class Company(models.Model):
@@ -33,7 +34,7 @@ class Project(models.Model):
 
 
 class State(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, unique=True)
 
     def __str__(self):
         return 'State name: %s' % self.name
@@ -41,13 +42,14 @@ class State(models.Model):
 
 class Design(models.Model):
     value = models.DecimalField(max_digits=10, decimal_places=2)
-    created_date = models.DateTimeField()
+    created_date = models.DateTimeField(default=timezone.now)
     process_file = models.ImageField(upload_to='process/', null=True, verbose_name="")
-    original_file = models.ImageField(upload_to='original/', verbose_name="Design: ")
+    original_file = models.ImageField(upload_to='original/', verbose_name="Design")
     designer_name = models.CharField(max_length=30)
     designer_last_name = models.CharField(max_length=30)
     designer_email = models.EmailField()
     state = models.ForeignKey(State, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     def __str__(self):
         return 'Design by: %s on %s' % (self.designer_name, self.created_date)
