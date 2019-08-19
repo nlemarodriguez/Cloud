@@ -1,0 +1,4 @@
+Generate requeriments:  pip freeze > requirements.txt.
+Install:                pip install -r .\requirements.txt       
+Run:                    py manage.py runserver
+Run Ubuntu VM           nohup python3 manage.py runserver 0.0.0.0:8080 &       
