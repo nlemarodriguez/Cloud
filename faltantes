@@ -1,0 +1,10 @@
+1. ajustar el camino triste del login
+2. Borrar las plantillas de la pagina de las empresas y de los disenos de un proyecto
+3. Crear el proceso en batch que modificque las imagenes a procesadas
+4. Validar que solo se muestren los disenos procesados
+5. Cuando una empresas tiene al menos un proyecto quede seleccionado por defecto
+6. Mejorar el landig page con la informacion necesaria
+7. Mejorar el front de todas las paginas
+    a. la pagina de una empresa particular empresa.html
+8. Revisar os links del navbar
+9. Arreglar el footer para que siempre quede abajo y deje un buena espacio en la pagina
