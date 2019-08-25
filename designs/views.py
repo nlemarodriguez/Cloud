@@ -8,7 +8,7 @@ from django.utils.text import slugify
 from django.http import HttpResponse, Http404
 import os
 from django.conf import settings
-
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -42,7 +42,10 @@ def proyecto(request, url, idproyecto):
     company = Company.objects.get(url=url)
     projects = Project.objects.filter(company=company)
     project = Project.objects.get(id=idproyecto)
-    designs = Design.objects.filter(project=project).order_by('-created_date')
+    designs_list = Design.objects.filter(project=project).order_by('-created_date')
+    paginator = Paginator(designs_list, 10)  # Show 10 designs per page
+    page = request.GET.get('page')
+    designs = paginator.get_page(page)
     design_form = DesignCreationForm()
     if request.method == 'POST':
         form_project = ProjectCreationForm(request.POST, instance=project)

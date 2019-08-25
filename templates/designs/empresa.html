@@ -96,10 +96,7 @@
                                     ></a>
                                     <div class="card-body">
                                         {% if company.owner == user %}
-                                            <h4 class="card-title">
-                                                Creado por
-                                            </h4>
-                                            <p><b>Disenador:</b> {{ d.designer_name }} {{ d.designer_last_name }}</p>
+                                            <p><b>Diseñador:</b> {{ d.designer_name }} {{ d.designer_last_name }}</p>
                                             <p><b>Email:</b> {{ d.designer_email }}</p>
                                             <p><b>Precio pedido:</b> {{ d.value }}</p>
                                             <p><b>Estado:</b> {{ d.state.name }}</p>
@@ -126,6 +123,7 @@
                                 </div>
                             </div>
                         {% endfor %}
+
                     {% else %}
                         <em>(Aun no hay disenos para este proyecto)</em>
                     {% endif %}
@@ -135,15 +133,52 @@
                 {% elif form_project is None %}
                     <em>(Selecciona algun proyecto)</em>
                 {% endif %}
+
                 </div>
                 <!-- /.row -->
+                <div class="row justify-content-center">
+                    <nav aria-label="Page navigation example">
+                        {% if designs.has_other_pages %}
+                            <ul class="pagination justify-content-center">
+                                {% if designs.has_previous %}
+                                    <li class="page-item"><a class="page-link"
+                                                             href="?page={{ designs.previous_page_number }}"><span
+                                            aria-hidden="true">&laquo;</span></a></li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><span
+                                                aria-hidden="true">&laquo;</span></a>
+                                    </li>
+                                {% endif %}
+                                {% for i in designs.paginator.page_range %}
+                                    {% if designs.number == i %}
+                                        <li class="page-item active"><a class="page-link"
+                                                                        href="?page={{ i }}"><span>{{ i }} <span
+                                                class="sr-only">(current)</span></span></a></li>
+                                    {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if designs.has_next %}
+                                    <li class="page-item"><a class="page-link"
+                                                             href="?page={{ designs.next_page_number }}"><span
+                                            aria-hidden="true">&raquo;</span></a></li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><span
+                                                aria-hidden="true">&raquo;</span></a>
+                                    </li>
 
+                                {% endif %}
+                            </ul>
+                        {% endif %}
+                    </nav>
+                </div>
+                <!-- /.row -->
             </div>
             <!-- /.col-lg-9 -->
-
         </div>
         <!-- /.row -->
-
     </div>
     <!-- /.container -->
 {% endblock %}
