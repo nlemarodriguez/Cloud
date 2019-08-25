@@ -7,7 +7,7 @@
 
             <div class="col-lg-3">
 
-                <h2 class="my-4 text-muted">Proyectos de la empresa  <b>{{ company.name }}</b></h2>
+                <h2 class="my-4 text-muted">Proyectos de la empresa <b>{{ company.name }}</b></h2>
                 {% if company.owner == user %}
                     <a href="/empresas/{{ company.url }}/nuevo_proyecto/" class="btn btn-outline-success mb-2 btn-sm">Nuevo
                         Proyecto <i class='fas fa-plus' style='font-size:15px;color:green'></i> </a>
@@ -19,7 +19,8 @@
                             <a href="/empresas/{{ company.url }}/{{ p.pk }}"
                                class="mr-auto  bd-highlight">{{ p.name }}</a>
                             {% if company.owner == user %}
-                                <a href="/empresas/{{ company.url }}/{{ p.pk }}/eliminar"><i
+                                <a onclick="return confirm('Estas seguro que deseas eliminar este proyecto?')"
+                                   href="/empresas/{{ company.url }}/{{ p.pk }}/eliminar"><i
                                         class='far fa-trash-alt  bd-highlight'
                                         style='font-size:24px;color:red'></i></a>
                             {% endif %}
@@ -82,14 +83,16 @@
                         {% for d in designs %}
                             <div class="col-lg-4 col-md-6 mb-4">
                                 <div class="card h-100">
-                                    <a href="#"><img class="card-img-top" src="../../../media/{{ d.original_file }}" alt=""></a>
+                                    <a href="#"><img class="card-img-top" src="../../../media/{{ d.original_file }}"
+                                                     alt=""></a>
                                     <div class="card-body">
                                         {% if company.owner == user %}
-                                        <h4 class="card-title">
-                                            <a href="#">Creado por: {{ d.designer_name }} {{ d.designer_last_name }}</a>
-                                        </h4>
-                                        <p><b>Email:</b> {{ d.designer_email }}</p>
-                                        <h5>${{ d.value }}</h5>
+                                            <h4 class="card-title">
+                                                <a href="#">Creado
+                                                    por: {{ d.designer_name }} {{ d.designer_last_name }}</a>
+                                            </h4>
+                                            <p><b>Email:</b> {{ d.designer_email }}</p>
+                                            <h5>${{ d.value }}</h5>
                                         {% endif %}
                                         <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                                             Amet
