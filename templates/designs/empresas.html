@@ -9,9 +9,9 @@
         <!-- Jumbotron Header -->
         <header class="jumbotron my-4">
             <h1 class="display-3">Bienvenido disenador!</h1>
-            <p class="lead">A continuacion encontrara una lista de empresas que estan buscando disenadores como tu, que
-                tienen fabulosos proyectos de los que puedes ser parte, selecciona alguna de tu interes para que puedes
-                ver sus proyectos y animate a subir tus propios disenos</p>
+            <p class="lead">A continuación encontrarás una lista de empresas que estan buscando diseñadores como tú, que
+                tienen fabulosos proyectos de los que puedes ser parte, selecciona alguna de tu interés para que puedas
+                ver sus proyectos y animate a subir tus propios diseños</p>
 
         </header>
 
@@ -20,9 +20,8 @@
             {% for c in companies %}
                 <div class="col-lg-3 col-md-6 mb-4">
                     <div class="card h-100">
-                        <img class="card-img-top" src="http://placehold.it/500x325" alt="">
                         <div class="card-body">
-                            <h4 class="card-title">{{ c.name }}</h4>
+                            <h3 class="card-title text-info">{{ c.name }}</h3>
                             <p class="card-text"><strong>URL de la empresa: </strong><br>{{ c.url }} <br><br><strong>Administrada
                                 por: </strong><br> {{ c.owner }}</p>
                         </div>

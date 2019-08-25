@@ -45,23 +45,22 @@
                     {% else %}
                         <br>
                         <div class="card mb-3">
-                            <div class="card-header">Nombre: {{ project.name }}</div>
+                            <div class="card-header"><b>Nombre:</b> {{ project.name }}</div>
                             <div class="card-body text-info">
 
-                                <p class="card-text">Descripción: {{ project.description }}</p>
+                                <p class="card-text"><b>Descripción:</b> {{ project.description }}</p>
                             </div>
-                            <div class="card-footer bg-transparent">Presupuesto
-                                estimado: ${{ project.cost }}</div>
+                            <div class="card-footer bg-transparent"><b>Presupuesto estimado:</b> ${{ project.cost }}</div>
                         </div>
                     {% endif %}
 
                 {% endif %}
-                <br><br>
+                <hr>
+                <br>
                 {% if project %}
                     {% if user.is_authenticated == False %}
                         <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#design_form">
-                            Agregar
-                            diseño
+                            Agregar diseño <i class='fas fa-plus' style='font-size:15px;color:white'></i>
                         </button>
                         <br><br>
                         <div id="design_form" class="collapse in">
@@ -76,10 +75,11 @@
                             </form>
 
                         </div>
-
+                        <hr>
+                        <br>
                     {% endif %}
 
-                    <h4>Lista de disenos de este proyecto</h4>
+                    <h4>Lista de diseños de este proyecto</h4>
 
                     <div class="row">
                     {% if designs %}
@@ -90,10 +90,13 @@
 
                             {% endif %}
                             <div class="col-lg-4 col-md-6 mb-4">
+                                {% if company.owner == user %}
                                 <div class="card h-100">
-                                    <a href="../../../media/{{ d.original_file }}"><img class="card-img-top"
-                                                                                        src="/media/{{ d.original_file }}"
-                                    ></a>
+                                    {% if d.state.name == 'En proceso' %}
+                                        <a href="../../../media/{{ d.original_file }}"><img width="100" height="100" class="card-img-top" src="/media/{{ d.original_file }}"></a>
+                                    {% else %}
+                                        <a href="../../../media/{{ d.process_file }}"><img width="100" height="100" class="card-img-top" src="/media/{{ d.process_file }}"></a>
+                                    {% endif %}
                                     <div class="card-body">
                                         {% if company.owner == user %}
                                             <p><b>Diseñador:</b> {{ d.designer_name }} {{ d.designer_last_name }}</p>
@@ -113,23 +116,28 @@
                                                 </form>
                                                 </p>
                                             {% endif %}
-                                        {% else %}
-
                                         {% endif %}
                                     </div>
                                     <div class="card-footer">
                                         <small class="text-muted">Subido: {{ d.created_date }}</small>
                                     </div>
                                 </div>
+                                {% else %}
+                                    {% if d.state.name == 'Disponible' %}
+                                        <div class="card h-100">
+                                            <a href="../../../media/{{ d.process_file }}"><img width="100" height="100" class="card-img-top" src="/media/{{ d.process_file }}"></a>
+                                        <div class="card-footer">
+                                            <small class="text-muted">Subido: {{ d.created_date }}</small>
+                                        </div>
+                                        </div>
+                                    {% endif %}
+
+                                {% endif %}
                             </div>
                         {% endfor %}
-
                     {% else %}
-                        <em>(Aun no hay disenos para este proyecto)</em>
+                        <em>(Aun no hay diseños para este proyecto)</em>
                     {% endif %}
-
-
-
                 {% elif form_project is None %}
                     <em>(Selecciona algun proyecto)</em>
                 {% endif %}
