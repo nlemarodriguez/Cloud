@@ -5,6 +5,9 @@ from .models import Company, Project, Design, State
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.utils.text import slugify
+from django.http import HttpResponse, Http404
+import os
+from django.conf import settings
 
 
 # Create your views here.
@@ -39,7 +42,7 @@ def proyecto(request, url, idproyecto):
     company = Company.objects.get(url=url)
     projects = Project.objects.filter(company=company)
     project = Project.objects.get(id=idproyecto)
-    designs = Design.objects.filter(project=project)
+    designs = Design.objects.filter(project=project).order_by('-created_date')
     design_form = DesignCreationForm()
     if request.method == 'POST':
         form_project = ProjectCreationForm(request.POST, instance=project)
@@ -139,3 +142,16 @@ def custom_login(request):
             return empresa(request, company.url)
         else:
             pass
+
+def dowload_image(request, tipo, id):
+    design = Design.objects.get(id=id)
+    if tipo == 'original':
+        file_path = settings.BASE_DIR + design.original_file.url
+    else:
+        file_path = settings.BASE_DIR + design.process_file.url
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404
