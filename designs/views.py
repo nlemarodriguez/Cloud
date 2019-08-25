@@ -10,6 +10,7 @@ import os
 from django.conf import settings
 from django.core.paginator import Paginator
 
+
 # Create your views here.
 
 def home(request):
@@ -51,7 +52,7 @@ def proyecto(request, url, idproyecto):
         form_project = ProjectCreationForm(request.POST, instance=project)
         if form_project.is_valid():
             form_project.save()
-            messages.success(request, 'Proyecto actualizado con exito')
+            messages.success(request, 'Proyecto actualizado con éxito')
             return empresa(request, url)
         else:
             print('paila actualizando')
@@ -77,7 +78,7 @@ def nuevo_proyecto(request, url):
             company = Company.objects.get(url=url)
             project.company = company
             project.save()
-            messages.success(request, 'Proyecto creado con exito')
+            messages.success(request, 'Proyecto creado con éxito')
             return empresa(request, url)
         else:
             print('paila proyecto')
@@ -97,16 +98,18 @@ def nuevo_design(request, url, idproyecto):
             state, created = State.objects.get_or_create(name='En proceso')
             design.state = state
             project = Project.objects.get(id=idproyecto)
-            design.project=project
+            design.project = project
             design.save()
-            request.method='GET'
+            request.method = 'GET'
+            messages.success(request, 'Hemos recibido tu diseño y lo estamos procesado para que sea publicado. Tan pronto esto ocurra, te notificaremos por email')
             return proyecto(request, url, idproyecto)
         else:
             print('paila diseno')
             print(form_design.errors)
-            #return proyecto(request, url, idproyecto)
+            # return proyecto(request, url, idproyecto)
     else:
         pass
+
 
 def registro(request):
     if request.method == 'POST':
@@ -145,6 +148,7 @@ def custom_login(request):
             return empresa(request, company.url)
         else:
             pass
+
 
 def dowload_image(request, tipo, id):
     design = Design.objects.get(id=id)
