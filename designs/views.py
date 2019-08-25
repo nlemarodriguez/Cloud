@@ -1,5 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from rest_framework.decorators import api_view
+from rest_framework.exceptions import NotFound
+from rest_framework.utils import json
+
 from .forms import CustomUserCreationForm, CompanyCreationForm, ProjectCreationForm, DesignCreationForm
 from .models import Company, Project, Design, State
 from django.core.exceptions import ObjectDoesNotExist
@@ -155,3 +159,20 @@ def dowload_image(request, tipo, id):
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
     raise Http404
+
+# Trae todos los diseños con estado 'En proceso'
+@api_view(['GET'])
+def get_designs(request):
+
+    status = State.objects.filter(name='En proceso')
+
+    try:
+        design = Design.objects.filter(state=status[0])
+    except Design.DoesNotExist:
+        raise NotFound(detail="Error 404, No designs in process", code=404)
+
+    designs = []
+
+    for des in design:
+        designs.append({"designer_name": des.designer_name, "designer_last_name": des.designer_last_name, "created_date": str(des.created_date), "original_file": str(des.original_file)})
+    return HttpResponse(json.dumps(designs), content_type="application/json")
