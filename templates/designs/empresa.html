@@ -43,13 +43,13 @@
                         </form>
                     {% else %}
                         <br>
-                        <div class="card border-info mb-3">
+                        <div class="card mb-3">
                             <div class="card-header">Nombre: {{ project.name }}</div>
                             <div class="card-body text-info">
 
                                 <p class="card-text">Descripción: {{ project.description }}</p>
                             </div>
-                            <div class="card-footer bg-transparent border-info">Presupuesto
+                            <div class="card-footer bg-transparent">Presupuesto
                                 estimado: ${{ project.cost }}</div>
                         </div>
                     {% endif %}

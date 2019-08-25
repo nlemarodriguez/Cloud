@@ -51,8 +51,8 @@ class DesignCreationForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['value'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Valor del diseno'})
         self.fields['designer_name'].widget.attrs.update(
-            {'class': 'form-control', 'placeholder': 'Nombre del disenador'})
+            {'class': 'form-control', 'placeholder': 'Nombre del diseñador'})
         self.fields['designer_last_name'].widget.attrs.update(
-            {'class': 'form-control', 'placeholder': 'Apellido del disenador'})
+            {'class': 'form-control', 'placeholder': 'Apellido del diseñador'})
         self.fields['designer_email'].widget.attrs.update(
-            {'class': 'form-control', 'placeholder': 'Email del disenador'})
+            {'class': 'form-control', 'placeholder': 'Email del diseñador'})
