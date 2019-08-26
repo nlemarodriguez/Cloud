@@ -22,9 +22,11 @@ for i in designs:
     new_size = tuple([int(x*ratio) for x in old_size])
     img = img.resize(new_size, Image.ANTIALIAS)
 
+    width, height = img.size
+
     # se comenta la imagen con el nombre del diseñador y fecha
     draw = ImageDraw.Draw(img)
-    draw.text((10, 10), 'Diseñador: {} {}\nFecha: {}'.format(i['designer_name'], i['designer_last_name']
+    draw.text((20, height-30), 'Diseñador: {} {}\nFecha: {}'.format(i['designer_name'], i['designer_last_name']
                                                               , i['created_date']), fill="white")
 
     # Obtener nombre de archivo
