@@ -1,11 +1,11 @@
 import requests
 from PIL import Image, ImageDraw
-
-# Consulta las imagenes sin procesar
 from rest_framework.utils import json
 
 url = 'http://127.0.0.1:8000/disenos/'
+url_update = 'http://127.0.0.1:8000/diseno-act/'
 
+# Consulta las imagenes sin procesar
 response = requests.get(url)
 designs = json.loads(response.text)
 
@@ -34,3 +34,7 @@ for i in designs:
 
     # Se guarda nueva imagen
     img.save('../media/process/' + filename + '.png')
+
+    # Se actualiza estado y ruta del diseño procesado
+    data = {"original_file": '{}'.format(i['original_file']), "process_file": 'process/' + filename + '.png'}
+    r = requests.put(url_update, data=json.dumps(data), timeout=10)
