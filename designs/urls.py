@@ -17,4 +17,5 @@ urlpatterns = [
     path('login/', views.custom_login, name='login'),
     path('dowload_image/<str:tipo>/<int:id>', views.dowload_image, name='login'),
     path('disenos/', views.get_designs, name='disenos'),
+    path('diseno-act/', views.put_designs, name='diseno-act'),
 ]
