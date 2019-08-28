@@ -25,7 +25,7 @@ SECRET_KEY = '_9ma-ug03i5)#q)sgm5r=8k3j+!g=dta3!#)b^#yu5m+2xxaah'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -131,7 +131,8 @@ AUTH_USER_MODEL = 'designs.CustomUser'
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MAIN_URL = 'http://127.0.0.1:8000/'
+#MAIN_URL = 'http://127.0.0.1:8000/'
+MAIN_URL = os.environ["MAIN_URL"]
 
 
 # emaillogin_project/settings.py

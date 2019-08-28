@@ -188,7 +188,7 @@ def get_designs(request):
 @api_view(['PUT'])
 def put_designs(request):
 
-    dis = json.loads(request.body)
+    dis = json.loads(request.body.decode('utf-8'))
 
     try:
         design = Design.objects.get(original_file=dis['original_file'])
