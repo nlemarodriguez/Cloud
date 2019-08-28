@@ -1,5 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from rest_framework.decorators import api_view
+from rest_framework.exceptions import NotFound
+from rest_framework.utils import json
+
 from .forms import CustomUserCreationForm, CompanyCreationForm, ProjectCreationForm, DesignCreationForm
 from .models import Company, Project, Design, State
 from django.core.exceptions import ObjectDoesNotExist
@@ -162,3 +166,43 @@ def dowload_image(request, tipo, id):
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
     raise Http404
+
+# Trae todos los diseños con estado 'En proceso'
+@api_view(['GET'])
+def get_designs(request):
+
+    status, created = State.objects.get_or_create(name='En proceso')
+
+    try:
+        design = Design.objects.filter(state=status)
+    except Design.DoesNotExist:
+        raise NotFound(detail="Error 404, No designs in process", code=404)
+
+    designs = []
+
+    for des in design:
+        designs.append({"designer_name": des.designer_name, "designer_last_name": des.designer_last_name, "created_date": str(des.created_date), "original_file": str(des.original_file)})
+    return HttpResponse(json.dumps(designs), content_type="application/json")
+
+# Se actualiza el estado del diseño y la ruta del archivo procesado
+@api_view(['PUT'])
+def put_designs(request):
+
+    dis = json.loads(request.body.decode('utf-8'))
+
+    try:
+        design = Design.objects.get(original_file=dis['original_file'])
+    except Design.DoesNotExist:
+        raise NotFound(detail="Error 404, Design not found", code=404)
+
+    status, created = State.objects.get_or_create(name='Disponible')
+
+    design.state = status
+    design.process_file = dis['process_file']
+    design.save()
+
+    designs_process= [{"designer_name": design.designer_name, "designer_last_name": design.designer_last_name,
+                       "created_date": str(design.created_date), "original_file": str(design.original_file),
+                       "process_file": str(design.process_file), "state": str(design.state.name)}]
+
+    return HttpResponse(json.dumps(designs_process), content_type="application/json")
