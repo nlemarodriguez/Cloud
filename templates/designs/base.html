@@ -46,7 +46,7 @@
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link" role="button" href="#loginModal"
-                           data-toggle="modal">Login</a>
+                           data-toggle="modal">Inicia sesión</a>
                     </li>
                 {% endif %}
 
@@ -76,7 +76,7 @@
                         <div class="invalid-feedback">Escribe un correo valido</div>
                     </div>
                     <div class="form-group">
-                        <label>Password</label>
+                        <label>Contraseña</label>
                         <input type="password" class="form-control form-control-lg" id="password" required=""
                                autocomplete="new-password" name="password">
                         <div class="invalid-feedback">Escribe tu clave</div>
@@ -85,7 +85,7 @@
                         <button class="btn btn-outline-secondary btn-lg" data-dismiss="modal" aria-hidden="true">
                             Cancelar
                         </button>
-                        <button type="submit" class="btn btn-success btn-lg float-right" id="btnLogin">Login
+                        <button type="submit" class="btn btn-success btn-lg float-right" id="btnLogin">Ingresar
                         </button>
                     </div>
                 </form>
@@ -127,6 +127,19 @@
 
         form.addClass('was-validated');
     });
+</script>
+
+<script>
+    $('#eliminarProyectoModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var recipient = button.data('whatever') // Extract info from data-* attributes
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+      var modal = $(this)
+      modal.find('.modal-body input').val(recipient)
+      var strLink = "/empresas/{{ company.url }}/"+recipient+"/eliminar";
+      document.getElementById("btnEliminar").setAttribute("href",strLink);
+    })
 </script>
 </body>
 

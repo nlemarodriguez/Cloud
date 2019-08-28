@@ -19,10 +19,14 @@
                             <a href="/empresas/{{ company.url }}/{{ p.pk }}"
                                class="mr-auto  bd-highlight">{{ p.name }}</a>
                             {% if company.owner == user %}
-                                <a onclick="return confirm('Estas seguro que deseas eliminar este proyecto?')"
+
+                                <a data-toggle="modal" data-target="#eliminarProyectoModal" data-whatever="{{ p.pk }}">
+                                    <i class='far fa-trash-alt  bd-highlight' style='font-size:24px;color:red'></i>
+                                </a>
+                                {% comment %}<a onclick="return confirm('Estas seguro que deseas eliminar este proyecto?')"
                                    href="/empresas/{{ company.url }}/{{ p.pk }}/eliminar"><i
                                         class='far fa-trash-alt  bd-highlight'
-                                        style='font-size:24px;color:red'></i></a>
+                                        style='font-size:24px;color:red'></i></a>{% endcomment %}
                             {% endif %}
 
                         </li>
@@ -215,4 +219,27 @@
         <!-- /.row -->
     </div>
     <!-- /.container -->
+
+    <!-- Modal -->
+
+    <div class="modal fade" id="eliminarProyectoModal" tabindex="-1" role="dialog" aria-labelledby="eliminarProyectoModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="eliminarProyectoModalTitle">Eliminar proyecto</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            ¿Está seguro que desea eliminar este proyecto?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+{#          <a class="btn btn-primary" id="btnEliminar" role="button">Eliminar</a>
+          </div>
+        </div>
+      </div>
+    </div>
 {% endblock %}
+
