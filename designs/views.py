@@ -171,10 +171,10 @@ def dowload_image(request, tipo, id):
 @api_view(['GET'])
 def get_designs(request):
 
-    status = State.objects.filter(name='En proceso')
+    status, created = State.objects.get_or_create(name='En proceso')
 
     try:
-        design = Design.objects.filter(state=status[0])
+        design = Design.objects.filter(state=status)
     except Design.DoesNotExist:
         raise NotFound(detail="Error 404, No designs in process", code=404)
 
@@ -195,16 +195,14 @@ def put_designs(request):
     except Design.DoesNotExist:
         raise NotFound(detail="Error 404, Design not found", code=404)
 
-    status = State.objects.filter(name='Disponible')
+    status, created = State.objects.get_or_create(name='Disponible')
 
-    design.state = status[0]
+    design.state = status
     design.process_file = dis['process_file']
     design.save()
 
-    designs_process = []
-
-    designs_process.append({"designer_name": design.designer_name, "designer_last_name": design.designer_last_name,
-                        "created_date": str(design.created_date), "original_file": str(design.original_file),
-                        "process_file": str(design.process_file), "state": str(design.state.name)})
+    designs_process= [{"designer_name": design.designer_name, "designer_last_name": design.designer_last_name,
+                       "created_date": str(design.created_date), "original_file": str(design.original_file),
+                       "process_file": str(design.process_file), "state": str(design.state.name)}]
 
     return HttpResponse(json.dumps(designs_process), content_type="application/json")

@@ -10,15 +10,22 @@ from django.conf import settings
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project_1.settings")
 django.setup()
 
-url = 'http://127.0.0.1:8000/disenos/'
-url_update = 'http://127.0.0.1:8000/diseno-act/'
+url = os.path.join(settings.MAIN_URL, 'disenos/')
+url_update = os.path.join(settings.MAIN_URL, 'diseno-act/')
 
 # Consulta las imagenes sin procesar
 response = requests.get(url)
 designs = json.loads(response.text)
 
 # Se recorre el json con las imagenes sin procesar
+f = open(settings.BASE_DIR + "/logs/log", "a+")
+now = datetime.now()
+f.write("Hora: %a -> Inicia proceso, cantidad de archivos a procesar: %a \r" % (
+    now.strftime("%d/%m/%Y %H:%M:%S"), len(designs)))
 for i in designs:
+    now = datetime.now()
+    f.write("Hora: %a -> Inicia conversion de archivo %a \r" % (
+        now.strftime("%d/%m/%Y %H:%M:%S"), '{}'.format(i['original_file'])))
     desired_size = 800
 
     img = Image.open(settings.MEDIA_ROOT + '/{}'.format(i['original_file']))
@@ -49,10 +56,10 @@ for i in designs:
     r = requests.put(url_update, data=json.dumps(data), timeout=10)
 
     # registro en log de eventos
-    f = open(settings.BASE_DIR + "/logs/log", "a+")
     now = datetime.now()
-    f.write("Hora: %a " % now.strftime("%d/%m/%Y %H:%M:%S") + "-> Process " + '{}'.format(i['original_file']) +
-            " to " + 'process/' + filename + '.png \r\n')
-    f.close()
+    f.write("Hora: %a -> Convirtio archivo %a a archivo process/ %a .png \r" % (
+        now.strftime("%d/%m/%Y %H:%M:%S"), '{}'.format(i['original_file']), filename))
 
-    time.sleep(5)
+f.write("Hora: %a -> Finaliza proceso \r\n" % (
+    now.strftime("%d/%m/%Y %H:%M:%S")))
+f.close()

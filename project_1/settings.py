@@ -131,6 +131,7 @@ AUTH_USER_MODEL = 'designs.CustomUser'
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MAIN_URL = 'http://127.0.0.1:8000/'
 
 
 # emaillogin_project/settings.py
