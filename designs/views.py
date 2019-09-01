@@ -163,7 +163,6 @@ def dowload_image(request, tipo, id):
     design = Design.objects.get(id=id)
     if tipo == 'original':
         file_path = settings.BASE_DIR + design.original_file.url
-        send_email_designer(design.designer_email)
     else:
         file_path = settings.BASE_DIR + design.process_file.url
     if os.path.exists(file_path):
@@ -223,9 +222,7 @@ def update_url(request):
     if request.method == 'POST':
         pk_company = request.POST.get('company_pk')
         url_company = request.POST.get('company_url')
-        print("******************"+str(url_company))
         company_list = Company.objects.filter(url=url_company)
-        print(company_list)
         if len(company_list) > 0:
             messages.error(request, 'ERROR! Esa Url ya existe, intente con una nueva')
             return redirect('empresas')
