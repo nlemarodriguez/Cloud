@@ -13,6 +13,7 @@ from django.http import HttpResponse, Http404
 import os
 from django.conf import settings
 from django.core.paginator import Paginator
+from django.core.mail import send_mail
 
 
 # Create your views here.
@@ -50,7 +51,12 @@ def proyecto(request, url, idproyecto):
     designs_list = Design.objects.filter(project=project).order_by('-created_date')
     paginator = Paginator(designs_list, 10)  # Show 10 designs per page
     page = request.GET.get('page')
-    designs = paginator.get_page(page)
+    designs_owner = paginator.get_page(page)
+    state_design = State.objects.get(pk=2)
+    designs_list_d = Design.objects.filter(project=project, state=state_design).order_by('-created_date')
+    paginator2 = Paginator(designs_list_d, 10)  # Show 10 designs per page
+    page2 = request.GET.get('page')
+    designs_designer = paginator2.get_page(page2)
     design_form = DesignCreationForm()
     if request.method == 'POST':
         form_project = ProjectCreationForm(request.POST, instance=project)
@@ -63,8 +69,8 @@ def proyecto(request, url, idproyecto):
     else:
         form_project = ProjectCreationForm(instance=project)
         return render(request, 'designs/empresa.html',
-                      {'form_project': form_project, 'company': project.company, 'designs': designs,
-                       'projects': projects, 'project': project, 'design_form': design_form})
+                      {'form_project': form_project, 'company': project.company, 'designs_owner': designs_owner,
+                       'designs_designer':designs_designer, 'projects': projects, 'project': project, 'design_form': design_form})
 
 
 def eliminar_proyecto(request, url, idproyecto):
@@ -158,6 +164,7 @@ def dowload_image(request, tipo, id):
     design = Design.objects.get(id=id)
     if tipo == 'original':
         file_path = settings.BASE_DIR + design.original_file.url
+        send_email_designer(design.designer_email)
     else:
         file_path = settings.BASE_DIR + design.process_file.url
     if os.path.exists(file_path):
@@ -201,8 +208,16 @@ def put_designs(request):
     design.process_file = dis['process_file']
     design.save()
 
+    send_email_designer(design.designer_email)
+
     designs_process= [{"designer_name": design.designer_name, "designer_last_name": design.designer_last_name,
                        "created_date": str(design.created_date), "original_file": str(design.original_file),
                        "process_file": str(design.process_file), "state": str(design.state.name)}]
 
     return HttpResponse(json.dumps(designs_process), content_type="application/json")
+
+
+def send_email_designer(mail_designer):
+    print("ANTES DE ENVIAR EMAIL")
+    send_mail('Diseño procesado', 'Tu diseño ha sido procesado! Ahora es visible para todos', 'dn.lecca@uniandes.edu.co', [mail_designer])
+    print()

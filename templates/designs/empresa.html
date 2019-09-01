@@ -102,106 +102,149 @@
                     <h4>Lista de diseños de este proyecto</h4>
 
                     <div class="row">
-                    {% if designs %}
-                        {% for d in designs %}
-                            {% if company.owner == user %}
-
-                            {% else %}
-
-                            {% endif %}
-                            <div class="col-lg-4 col-md-6 mb-4">
-                                {% if company.owner == user %}
-                                <div class="card h-100">
-                                    {% if d.state.name == 'En proceso' %}
-                                        <a href="../../../media/{{ d.original_file }}"><img width="100" height="100" class="card-img-top" src="/media/{{ d.original_file }}"></a>
-                                    {% else %}
-                                        <a href="../../../media/{{ d.process_file }}"><img width="100" height="100" class="card-img-top" src="/media/{{ d.process_file }}"></a>
-                                    {% endif %}
-                                    <div class="card-body">
-                                        {% if company.owner == user %}
-                                            <p><b>Diseñador:</b> {{ d.designer_name }} {{ d.designer_last_name }}</p>
-                                            <p><b>Email:</b> {{ d.designer_email }}</p>
-                                            <p><b>Precio pedido:</b> {{ d.value }}</p>
-                                            <p><b>Estado:</b> {{ d.state.name }}</p>
-                                            <p><b>Archivo original:</b>
-                                            <form method="get" action="/dowload_image/original/{{ d.id }}">
-                                                <button class="btn"><i class="fa fa-download"></i> Descargar</button>
-                                            </form>
-                                            </p>
-                                            {% if d.state.name == 'Disponible' %}
-                                                <p><b>Archivo procesado:</b>
-                                                <form method="get" action="/dowload_image/processed/{{ d.id }}">
-                                                    <button class="btn"><i class="fa fa-download"></i> Descargar
-                                                    </button>
+                    {% if company.owner == user %}
+                        {% if designs_owner %}
+                            {% for d in designs_owner %}
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <div class="card h-100">
+                                        {% if d.state.name == 'En proceso' %}
+                                            <a href="../../../media/{{ d.original_file }}"><img width="100" height="100" class="card-img-top" src="/media/{{ d.original_file }}"></a>
+                                        {% else %}
+                                            <a href="../../../media/{{ d.process_file }}"><img width="100" height="100" class="card-img-top" src="/media/{{ d.process_file }}"></a>
+                                        {% endif %}
+                                        <div class="card-body">
+                                            {% if company.owner == user %}
+                                                <p><b>Diseñador:</b> {{ d.designer_name }} {{ d.designer_last_name }}</p>
+                                                <p><b>Email:</b> {{ d.designer_email }}</p>
+                                                <p><b>Precio pedido:</b> {{ d.value }}</p>
+                                                <p><b>Estado:</b> {{ d.state.name }}</p>
+                                                <p><b>Archivo original:</b>
+                                                <form method="get" action="/dowload_image/original/{{ d.id }}">
+                                                    <button class="btn"><i class="fa fa-download"></i> Descargar</button>
                                                 </form>
                                                 </p>
+                                                {% if d.state.name == 'Disponible' %}
+                                                    <p><b>Archivo procesado:</b>
+                                                    <form method="get" action="/dowload_image/processed/{{ d.id }}">
+                                                        <button class="btn"><i class="fa fa-download"></i> Descargar
+                                                        </button>
+                                                    </form>
+                                                    </p>
+                                                {% endif %}
                                             {% endif %}
-                                        {% endif %}
-                                    </div>
-                                    <div class="card-footer">
-                                        <small class="text-muted">Subido: {{ d.created_date }}</small>
-                                    </div>
-                                </div>
-                                {% else %}
-                                    {% if d.state.name == 'Disponible' %}
-                                        <div class="card h-100">
-                                            <a href="../../../media/{{ d.process_file }}"><img width="100" height="100" class="card-img-top" src="/media/{{ d.process_file }}"></a>
+                                        </div>
                                         <div class="card-footer">
                                             <small class="text-muted">Subido: {{ d.created_date }}</small>
                                         </div>
-                                        </div>
-                                    {% endif %}
-
-                                {% endif %}
-                            </div>
-                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <em>(Aun no hay diseños para este proyecto)</em>
+                        {% endif %}
                     {% else %}
-                        <em>(Aun no hay diseños para este proyecto)</em>
+                        {% if designs_designer %}
+                            {% for d in designs_designer %}
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <div class="card h-100">
+                                        <a href="../../../media/{{ d.process_file }}"><img width="100" height="100" class="card-img-top" src="/media/{{ d.process_file }}"></a>
+                                        <div class="card-footer">
+                                            <small class="text-muted">Subido: {{ d.created_date }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <em>(Aun no hay diseños para este proyecto)</em>
+                        {% endif %}
                     {% endif %}
+
                 {% elif form_project is None %}
                     <em>(Selecciona algun proyecto)</em>
                 {% endif %}
 
                 </div>
                 <!-- /.row -->
-                <div class="row justify-content-center">
-                    <nav aria-label="Page navigation example">
-                        {% if designs.has_other_pages %}
-                            <ul class="pagination justify-content-center">
-                                {% if designs.has_previous %}
-                                    <li class="page-item"><a class="page-link"
-                                                             href="?page={{ designs.previous_page_number }}"><span
-                                            aria-hidden="true">&laquo;</span></a></li>
-                                {% else %}
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><span
-                                                aria-hidden="true">&laquo;</span></a>
-                                    </li>
-                                {% endif %}
-                                {% for i in designs.paginator.page_range %}
-                                    {% if designs.number == i %}
-                                        <li class="page-item active"><a class="page-link"
-                                                                        href="?page={{ i }}"><span>{{ i }} <span
-                                                class="sr-only">(current)</span></span></a></li>
+                {% if company.owner == user %}
+                    <div class="row justify-content-center">
+                        <nav aria-label="Page navigation example">
+                            {% if designs_owner.has_other_pages %}
+                                <ul class="pagination justify-content-center">
+                                    {% if designs_owner.has_previous %}
+                                        <li class="page-item"><a class="page-link"
+                                                                 href="?page={{ designs_owner.previous_page_number }}"><span
+                                                aria-hidden="true">&laquo;</span></a></li>
                                     {% else %}
-                                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><span
+                                                    aria-hidden="true">&laquo;</span></a>
+                                        </li>
                                     {% endif %}
-                                {% endfor %}
-                                {% if designs.has_next %}
-                                    <li class="page-item"><a class="page-link"
-                                                             href="?page={{ designs.next_page_number }}"><span
-                                            aria-hidden="true">&raquo;</span></a></li>
-                                {% else %}
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><span
-                                                aria-hidden="true">&raquo;</span></a>
-                                    </li>
+                                    {% for i in designs_owner.paginator.page_range %}
+                                        {% if designs_owner.number == i %}
+                                            <li class="page-item active"><a class="page-link"
+                                                                            href="?page={{ i }}"><span>{{ i }} <span
+                                                    class="sr-only">(current)</span></span></a></li>
+                                        {% else %}
+                                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if designs_owner.has_next %}
+                                        <li class="page-item"><a class="page-link"
+                                                                 href="?page={{ designs_owner.next_page_number }}"><span
+                                                aria-hidden="true">&raquo;</span></a></li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><span
+                                                    aria-hidden="true">&raquo;</span></a>
+                                        </li>
 
-                                {% endif %}
-                            </ul>
-                        {% endif %}
-                    </nav>
-                </div>
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
+                        </nav>
+                    </div>
+                {% else %}
+                     <div class="row justify-content-center">
+                        <nav aria-label="Page navigation example">
+                            {% if designs_designer.has_other_pages %}
+                                <ul class="pagination justify-content-center">
+                                    {% if designs_designer.has_previous %}
+                                        <li class="page-item"><a class="page-link"
+                                                                 href="?page={{ designs_designer.previous_page_number }}"><span
+                                                aria-hidden="true">&laquo;</span></a></li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><span
+                                                    aria-hidden="true">&laquo;</span></a>
+                                        </li>
+                                    {% endif %}
+                                    {% for i in designs_designer.paginator.page_range %}
+                                        {% if designs_designer.number == i %}
+                                            <li class="page-item active"><a class="page-link"
+                                                                            href="?page={{ i }}"><span>{{ i }} <span
+                                                    class="sr-only">(current)</span></span></a></li>
+                                        {% else %}
+                                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if designs_designer.has_next %}
+                                        <li class="page-item"><a class="page-link"
+                                                                 href="?page={{ designs_designer.next_page_number }}"><span
+                                                aria-hidden="true">&raquo;</span></a></li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><span
+                                                    aria-hidden="true">&raquo;</span></a>
+                                        </li>
+
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
+                        </nav>
+                     </div>
+                {% endif %}
+
                 <!-- /.row -->
                 <div class="my-3 col-lg-9 justify-content-center">
                 {% if messages %}
