@@ -109,7 +109,7 @@ def nuevo_design(request, url, idproyecto):
             design.project = project
             design.save()
             request.method = 'GET'
-            messages.success(request, 'Hemos recibido tu diseño y lo estamos procesado para que sea publicado. Tan pronto esto ocurra, te notificaremos por email')
+            messages.info(request, 'Hemos recibido tu diseño y lo estamos procesado para que sea publicado. Tan pronto esto ocurra, te notificaremos por email')
             return proyecto(request, url, idproyecto)
         else:
             print(form_design.errors)
@@ -228,6 +228,6 @@ def update_url(request):
             return redirect('empresas')
         else:
             company = Company.objects.get(pk=pk_company)
-            company.url = url_company
+            company.url = slugify(url_company)
             company.save()
             return redirect('empresas')
