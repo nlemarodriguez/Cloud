@@ -35,7 +35,7 @@ def empresas(request):
     return render(request, 'designs/empresas.html', {'companies': companies})
 
 
-# Es la empresa particualar, solo cuando no ha seleccionado un proyecto
+# Es la empresa particular, solo cuando no ha seleccionado un proyecto
 def empresa(request, url):
     print('url: ' + url)
     company = Company.objects.get(url=url)
@@ -154,7 +154,7 @@ def custom_login(request):
             company = Company.objects.get(owner=user)
             return empresa(request, company.url)
         else:
-            messages.success(request, 'Correo y contraseña incorrectos!')
+            messages.error(request, 'Correo y contraseña incorrectos!')
             return redirect('home')
 
 
@@ -217,6 +217,20 @@ def put_designs(request):
 
 
 def send_email_designer(mail_designer):
-    print("ANTES DE ENVIAR EMAIL")
     send_mail('Diseño procesado', 'Tu diseño ha sido procesado! Ahora es visible para todos', 'dn.lecca@uniandes.edu.co', [mail_designer])
-    print()
+
+def update_url(request):
+    if request.method == 'POST':
+        pk_company = request.POST.get('company_pk')
+        url_company = request.POST.get('company_url')
+        print("******************"+str(url_company))
+        company_list = Company.objects.filter(url=url_company)
+        print(company_list)
+        if len(company_list) > 0:
+            messages.error(request, 'ERROR! Esa Url ya existe, intente con una nueva')
+            return redirect('empresas')
+        else:
+            company = Company.objects.get(pk=pk_company)
+            company.url = url_company
+            company.save()
+            return redirect('empresas')

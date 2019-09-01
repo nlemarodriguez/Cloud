@@ -15,6 +15,21 @@
 
         </header>
 
+        <div class="row">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <p>{{ message }}</p>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
         <!-- Page Features -->
         <div class="row text-center">
             {% for c in companies %}
@@ -22,8 +37,14 @@
                     <div class="card h-100">
                         <div class="card-body">
                             <h3 class="card-title text-info">{{ c.name }}</h3>
-                            <p class="card-text"><strong>URL de la empresa: </strong><br>{{ c.url }} <br><br><strong>Administrada
-                                por: </strong><br> {{ c.owner }}</p>
+                            <p class="card-text">
+                                <strong>URL de la empresa: </strong><br>{{ c.url }} <br>
+                                {% if c.owner == user %}
+                                     <a style="cursor: pointer; color: #007bff;" class="mr-auto bd-highlight" data-toggle="modal" data-target="#editarUrlModal" data-whatever="{{ c.name }},{{ c.url }},{{ c.pk }}"><u>cambiar url</u></a><br><br>
+                                {% else %}
+                                    <br><br>
+                                {% endif %}
+                                <strong>Administrada por: </strong><br> {{ c.owner }}</p>
                         </div>
                         <div class="card-footer">
                             <a href="/empresas/{{ c.url }}" class="btn btn-primary">Proyectos</a>
@@ -37,4 +58,31 @@
 
     </div>
     <!-- /.container -->
+
+    <div class="modal fade" id="editarUrlModal" tabindex="-1" role="dialog" aria-labelledby="editarUrlModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editarUrlModalTitle">Editar URL</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form method="post" action="/cambiar_url">
+          <div class="modal-body">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="company_url" class="col-form-label">Url:</label>
+                <input type="text" class="form-control" id="company_url" name="company_url">
+              </div>
+              <input type="hidden" id="company_pk" name="company_pk">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Editar</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
 {% endblock %}

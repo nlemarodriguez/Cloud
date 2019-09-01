@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^$', views.home, name='home'),
     path('empresas/', views.empresas, name='empresas'),
     path('empresas/<str:url>', views.empresa, name='empresa'),
+    path('cambiar_url', views.update_url, name='update_url'),
     path('empresas/<str:url>/nuevo_proyecto/', views.nuevo_proyecto, name='add_project'),
     path('empresas/<str:url>/<int:idproyecto>', views.proyecto, name='view_project'),
     path('empresas/<str:url>/<int:idproyecto>/eliminar', views.eliminar_proyecto, name='delete_project'),

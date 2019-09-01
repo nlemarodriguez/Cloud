@@ -139,6 +139,26 @@
       document.getElementById("btnEliminar").setAttribute("href",strLink);
     })
 </script>
+
+<script>
+    $('#editarUrlModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget);// Button that triggered the modal
+      var company = button.data('whatever'); // Extract info from data-* attributes
+      var arreglo_comp = company.split(",");
+      var nombre = arreglo_comp[0];
+      var url = arreglo_comp[1];
+      var pk = arreglo_comp[2];
+
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+      var modal = $(this)
+        modal.find('.modal-title').text('Editar URL - '+nombre)
+        $("#company_pk").val(pk);
+        $("#company_url").val(url);
+    })
+</script>
+
+
 </body>
 
 </html>
