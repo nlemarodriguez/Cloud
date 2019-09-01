@@ -265,15 +265,14 @@
                         {% if messages %}
                             <ul class="messages">
                                 {% for message in messages %}
+                                {% if message.tags != 'info'%}
                                     <div class="alert alert-info alert-dismissible fade show" role="alert">
-                                        {% if 'Hemos recibido tu diseño' in message %}
-                                        {% else %}
                                             <p>{{ message }}</p>
-                                        {% endif %}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
+                                {% endif %}
                                 {% endfor %}
                             </ul>
                         {% endif %}
