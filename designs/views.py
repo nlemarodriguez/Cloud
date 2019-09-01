@@ -100,10 +100,8 @@ def nuevo_proyecto(request, url):
 
 def nuevo_design(request, url, idproyecto):
     if request.method == 'POST':
-        print('1')
         form_design = DesignCreationForm(request.POST, request.FILES)
         if form_design.is_valid():
-            print('1')
             design = form_design.save(commit=False)
             state, created = State.objects.get_or_create(name='En proceso')
             design.state = state
@@ -114,7 +112,6 @@ def nuevo_design(request, url, idproyecto):
             messages.success(request, 'Hemos recibido tu diseño y lo estamos procesado para que sea publicado. Tan pronto esto ocurra, te notificaremos por email')
             return proyecto(request, url, idproyecto)
         else:
-            print('paila diseno')
             print(form_design.errors)
             # return proyecto(request, url, idproyecto)
     else:
@@ -157,7 +154,9 @@ def custom_login(request):
             company = Company.objects.get(owner=user)
             return empresa(request, company.url)
         else:
-            pass
+            messages.success(request, 'Correo y contraseña incorrectos!')
+            return redirect('home')
+
 
 
 def dowload_image(request, tipo, id):

@@ -4,6 +4,21 @@
     <!-- Header - set the background image for the header in the line below -->
     <header class="py-5 bg-image-full" style="background-image: url('https://unsplash.it/1900/1080?image=1076');">
     </header>
+    {% if user.is_authenticated %}
+    {% else %}
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <p>{{ message }}</p>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endif %}
     <!-- Content section -->
     <section class="py-5 mt-5">
         <div class="container">
@@ -24,4 +39,5 @@
         </div>
         <div style="height: 200px;"></div>
     </section>
+
 {% endblock %}
