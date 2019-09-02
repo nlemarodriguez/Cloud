@@ -17,11 +17,12 @@ url_update = os.path.join(settings.MAIN_URL, 'diseno-act/')
 response = requests.get(url)
 designs = json.loads(response.text)
 
-# Se recorre el json con las imagenes sin procesar
 f = open(settings.BASE_DIR + "/logs/log", "a+")
 now = datetime.utcnow().strftime('%Y-%m-%d%H-%M-%S-%f')[:-3]
 f.write("Hora: %a -> Inicia proceso, cantidad de archivos a procesar: %a \r" % (
     now, len(designs)))
+
+# Se recorre el json con las imagenes sin procesar
 for i in designs:
     now = datetime.utcnow().strftime('%Y-%m-%d%H-%M-%S-%f')[:-3]
     f.write("Hora: %a -> Inicia conversion de archivo %a \r" % (
@@ -52,7 +53,7 @@ for i in designs:
     img.save(settings.MEDIA_ROOT + '/process/' + filename + '.png')
 
     # Se actualiza estado y ruta del diseño procesado
-    data = {"original_file": '{}'.format(i['original_file']), "process_file": 'process/' + filename + '.png'}
+    data = {"id": '{}'.format(i['id']), "original_file": '{}'.format(i['original_file']), "process_file": 'process/' + filename + '.png'}
     r = requests.put(url_update, data=json.dumps(data), timeout=10)
 
     # registro en log de eventos

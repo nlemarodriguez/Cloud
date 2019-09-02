@@ -192,7 +192,7 @@ def get_designs(request):
     designs = []
 
     for des in design:
-        designs.append({"designer_name": des.designer_name, "designer_last_name": des.designer_last_name,
+        designs.append({"id": des.pk, "designer_name": des.designer_name, "designer_last_name": des.designer_last_name,
                         "created_date": str(des.created_date), "original_file": str(des.original_file)})
     return HttpResponse(json.dumps(designs), content_type="application/json")
 
@@ -203,7 +203,7 @@ def put_designs(request):
     dis = json.loads(request.body.decode('utf-8'))
 
     try:
-        design = Design.objects.get(original_file=dis['original_file'])
+        design = Design.objects.get(pk=dis['id'])
     except Design.DoesNotExist:
         raise NotFound(detail="Error 404, Design not found", code=404)
 
