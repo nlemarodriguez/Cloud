@@ -19,4 +19,5 @@ urlpatterns = [
     path('dowload_image/<str:tipo>/<int:id>', views.dowload_image, name='login'),
     path('disenos/', views.get_designs, name='disenos'),
     path('diseno-act/', views.put_designs, name='diseno-act'),
+    path('upload_design/', views.upload_design, name='diseno-act'),
 ]

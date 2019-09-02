@@ -14,6 +14,7 @@ import os
 from django.conf import settings
 from django.core.paginator import Paginator
 from django.core.mail import send_mail
+from django.views.decorators.csrf import csrf_exempt
 
 
 # Create your views here.
@@ -70,7 +71,8 @@ def proyecto(request, url, idproyecto):
         form_project = ProjectCreationForm(instance=project)
         return render(request, 'designs/empresa.html',
                       {'form_project': form_project, 'company': project.company, 'designs_owner': designs_owner,
-                       'designs_designer':designs_designer, 'projects': projects, 'project': project, 'design_form': design_form})
+                       'designs_designer': designs_designer, 'projects': projects, 'project': project,
+                       'design_form': design_form})
 
 
 def eliminar_proyecto(request, url, idproyecto):
@@ -98,7 +100,11 @@ def nuevo_proyecto(request, url):
                       {'form_project': form_project, 'company': company, 'projects': projects})
 
 
+@csrf_exempt
 def nuevo_design(request, url, idproyecto):
+    print(request)
+    # print(request.body)
+    print(request.POST)
     if request.method == 'POST':
         form_design = DesignCreationForm(request.POST, request.FILES)
         if form_design.is_valid():
@@ -109,7 +115,8 @@ def nuevo_design(request, url, idproyecto):
             design.project = project
             design.save()
             request.method = 'GET'
-            messages.info(request, 'Hemos recibido tu diseño y lo estamos procesado para que sea publicado. Tan pronto esto ocurra, te notificaremos por email')
+            messages.info(request,
+                          'Hemos recibido tu diseño y lo estamos procesado para que sea publicado. Tan pronto esto ocurra, te notificaremos por email')
             return proyecto(request, url, idproyecto)
         else:
             print(form_design.errors)
@@ -158,7 +165,6 @@ def custom_login(request):
             return redirect('home')
 
 
-
 def dowload_image(request, tipo, id):
     design = Design.objects.get(id=id)
     if tipo == 'original':
@@ -172,10 +178,10 @@ def dowload_image(request, tipo, id):
             return response
     raise Http404
 
+
 # Trae todos los diseños con estado 'En proceso'
 @api_view(['GET'])
 def get_designs(request):
-
     status, created = State.objects.get_or_create(name='En proceso')
 
     try:
@@ -186,13 +192,14 @@ def get_designs(request):
     designs = []
 
     for des in design:
-        designs.append({"designer_name": des.designer_name, "designer_last_name": des.designer_last_name, "created_date": str(des.created_date), "original_file": str(des.original_file)})
+        designs.append({"designer_name": des.designer_name, "designer_last_name": des.designer_last_name,
+                        "created_date": str(des.created_date), "original_file": str(des.original_file)})
     return HttpResponse(json.dumps(designs), content_type="application/json")
+
 
 # Se actualiza el estado del diseño y la ruta del archivo procesado
 @api_view(['PUT'])
 def put_designs(request):
-
     dis = json.loads(request.body.decode('utf-8'))
 
     try:
@@ -208,15 +215,17 @@ def put_designs(request):
 
     send_email_designer(design.designer_email)
 
-    designs_process= [{"designer_name": design.designer_name, "designer_last_name": design.designer_last_name,
-                       "created_date": str(design.created_date), "original_file": str(design.original_file),
-                       "process_file": str(design.process_file), "state": str(design.state.name)}]
+    designs_process = [{"designer_name": design.designer_name, "designer_last_name": design.designer_last_name,
+                        "created_date": str(design.created_date), "original_file": str(design.original_file),
+                        "process_file": str(design.process_file), "state": str(design.state.name)}]
 
     return HttpResponse(json.dumps(designs_process), content_type="application/json")
 
 
 def send_email_designer(mail_designer):
-    send_mail('Diseño procesado', 'Tu diseño ha sido procesado! Ahora es visible para todos', 'dn.lecca@uniandes.edu.co', [mail_designer])
+    send_mail('Diseño procesado', 'Tu diseño ha sido procesado! Ahora es visible para todos',
+              'dn.lecca@uniandes.edu.co', [mail_designer])
+
 
 def update_url(request):
     if request.method == 'POST':
@@ -231,3 +240,12 @@ def update_url(request):
             company.url = slugify(url_company)
             company.save()
             return redirect('empresas')
+
+
+def upload_design(request):
+    project = Project.objects.get(id=30)
+    state = State.objects.get(id=1)
+    design = Design(value=1, designer_email='1@1.com', designer_last_name='apellido', designer_name='nombre',
+                    original_file='original/imagen-consciencia.jpg', state=state, project=project)
+    design.save()
+
