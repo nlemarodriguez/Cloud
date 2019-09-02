@@ -49,7 +49,7 @@ for i in designs:
     filename = file[9:position]
 
     # Se guarda nueva imagen
-    img.save(settings.MEDIA_ROOT + '/process/' + filename + '.png')
+    img.save(settings.MEDIA_ROOT + '/process/' + filename + now + '.png')
 
     # Se actualiza estado y ruta del diseño procesado
     data = {"original_file": '{}'.format(i['original_file']), "process_file": 'process/' + filename + '.png'}
