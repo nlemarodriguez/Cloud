@@ -17,15 +17,16 @@ url_update = os.path.join(settings.MAIN_URL, 'diseno-act/')
 response = requests.get(url)
 designs = json.loads(response.text)
 
-# Se recorre el json con las imagenes sin procesar
 f = open(settings.BASE_DIR + "/logs/log", "a+")
-now = datetime.now()
+now = datetime.utcnow().strftime('%Y-%m-%d%H-%M-%S-%f')[:-3]
 f.write("Hora: %a -> Inicia proceso, cantidad de archivos a procesar: %a \r" % (
-    now.strftime("%d/%m/%Y %H:%M:%S"), len(designs)))
+    now, len(designs)))
+
+# Se recorre el json con las imagenes sin procesar
 for i in designs:
-    now = datetime.now()
+    now = datetime.utcnow().strftime('%Y-%m-%d%H-%M-%S-%f')[:-3]
     f.write("Hora: %a -> Inicia conversion de archivo %a \r" % (
-        now.strftime("%d/%m/%Y %H:%M:%S"), '{}'.format(i['original_file'])))
+        now, '{}'.format(i['original_file'])))
     desired_size = 800
 
     img = Image.open(settings.MEDIA_ROOT + '/{}'.format(i['original_file']))
@@ -46,20 +47,21 @@ for i in designs:
     # Obtener nombre de archivo
     file = '{}'.format(i['original_file'])
     position = file.index('.')
-    filename = file[9:position]
-
+    filename = file[9:position] +''+ now
+    print(filename)
     # Se guarda nueva imagen
     img.save(settings.MEDIA_ROOT + '/process/' + filename + '.png')
 
     # Se actualiza estado y ruta del diseño procesado
-    data = {"original_file": '{}'.format(i['original_file']), "process_file": 'process/' + filename + '.png'}
+    data = {"id": '{}'.format(i['id']), "original_file": '{}'.format(i['original_file']), "process_file": 'process/' + filename + '.png'}
     r = requests.put(url_update, data=json.dumps(data), timeout=10)
 
     # registro en log de eventos
-    now = datetime.now()
+    now = datetime.utcnow().strftime('%Y-%m-%d%H-%M-%S-%f')[:-3]
     f.write("Hora: %a -> Convirtio archivo %a a archivo process/ %a .png \r" % (
-        now.strftime("%d/%m/%Y %H:%M:%S"), '{}'.format(i['original_file']), filename))
+        now, '{}'.format(i['original_file']), filename))
 
+now = datetime.utcnow().strftime('%Y-%m-%d%H-%M-%S-%f')[:-3]
 f.write("Hora: %a -> Finaliza proceso \r\n" % (
-    now.strftime("%d/%m/%Y %H:%M:%S")))
+    now))
 f.close()

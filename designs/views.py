@@ -192,7 +192,7 @@ def get_designs(request):
     designs = []
 
     for des in design:
-        designs.append({"designer_name": des.designer_name, "designer_last_name": des.designer_last_name,
+        designs.append({"id": des.pk, "designer_name": des.designer_name, "designer_last_name": des.designer_last_name,
                         "created_date": str(des.created_date), "original_file": str(des.original_file)})
     return HttpResponse(json.dumps(designs), content_type="application/json")
 
@@ -203,7 +203,7 @@ def put_designs(request):
     dis = json.loads(request.body.decode('utf-8'))
 
     try:
-        design = Design.objects.get(original_file=dis['original_file'])
+        design = Design.objects.get(pk=dis['id'])
     except Design.DoesNotExist:
         raise NotFound(detail="Error 404, Design not found", code=404)
 
@@ -243,9 +243,13 @@ def update_url(request):
 
 
 def upload_design(request):
-    project = Project.objects.get(id=30)
-    state = State.objects.get(id=1)
-    design = Design(value=1, designer_email='1@1.com', designer_last_name='apellido', designer_name='nombre',
-                    original_file='original/imagen-consciencia.jpg', state=state, project=project)
-    design.save()
+    try:
+        project = Project.objects.filter(name='Dia de la mujer')
+        state = State.objects.get(id=1)
+        design = Design(value=1, designer_email='1@1.com', designer_last_name='apellido', designer_name='nombre',
+                        original_file='original/imagen-consciencia.jpg', state=state, project=project[0])
+        design.save()
+        return HttpResponse(status=204)
+    except Exception:
+        return HttpResponse(status=500)
 
