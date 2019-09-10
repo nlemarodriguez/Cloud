@@ -53,7 +53,7 @@ def proyecto(request, url, idproyecto):
     paginator = Paginator(designs_list, 10)  # Show 10 designs per page
     page = request.GET.get('page')
     designs_owner = paginator.get_page(page)
-    state_design = State.objects.get(pk=2)
+    state_design, created = State.objects.get_or_create(name='Disponible')
     designs_list_d = Design.objects.filter(project=project, state=state_design).order_by('-created_date')
     paginator2 = Paginator(designs_list_d, 10)  # Show 10 designs per page
     page2 = request.GET.get('page')
