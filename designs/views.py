@@ -224,7 +224,7 @@ def put_designs(request):
 
 def send_email_designer(mail_designer):
     send_mail('Diseño procesado', 'Tu diseño ha sido procesado! Ahora es visible para todos',
-              'dn.lecca@uniandes.edu.co', [mail_designer])
+              os.environ["EMAIL_DESIGN_USER"], [mail_designer])
 
 
 def update_url(request):

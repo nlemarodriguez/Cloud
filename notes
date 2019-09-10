@@ -1,5 +1,15 @@
 Generate requeriments:  pip freeze > requirements.txt
-Install:                pip install -r .\requirements.txt       
+Install:                pip install -r requirements.txt
 Run:                    py manage.py runserver
 Run Ubuntu VM           nohup python3 manage.py runserver 0.0.0.0:8080 &
-prueba
+
+Se deben crear las siguientes variables de entorno para administrar la BD
+    "BD_DESIGN":           Nombre de la BD
+    "BD_DESIGN_USUARIO":   Usuario de la BD
+    "BD_DESIGN_PASSWORD":  Password
+    "BD_DESIGN_HOST":      Host
+
+Se deben adicionar las siguientes variables de entorno para configurar el envio de correos con SES de AWS
+    "EMAIL_DESIGN_KEY":         Clave de acceso generada en AWS
+    "EMAIL_DESIGN_SECRET_KEY":  Clave secreta generada en AWS
+    "EMAIL_DESIGN_USER":        Cuenta de correo verificada en SES de AWS
