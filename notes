@@ -2,6 +2,12 @@ Generate requeriments:  pip freeze > requirements.txt
 Install:                pip install -r requirements.txt
 Run:                    py manage.py runserver
 Run Ubuntu VM           nohup python3 manage.py runserver 0.0.0.0:8080 &
+Instalar python en EC2 instance: sudo yum install python36 python36-pip
+crear el ambiente virtual: virtualenv -p python3 venv_Grupo01
+para instalar la libreria de postgres ejecute estos comandos:
+    sudo yum install gcc python-setuptools python-devel postgresql-devel
+    sudo easy_install psycopg2
+    Y luego se se instala el requirements y aunque finaliza con error queda bien instalado
 
 Se deben crear las siguientes variables de entorno para administrar la BD
     "BD_DESIGN":           Nombre de la BD
