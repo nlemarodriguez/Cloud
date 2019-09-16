@@ -7,6 +7,7 @@ crear el ambiente virtual: virtualenv -p python3 venv_Grupo01
 para instalar la libreria de postgres ejecute estos comandos:
     sudo yum install gcc python-setuptools python-devel postgresql-devel
     sudo easy_install psycopg2
+    pip install psycopg2-binary
     Y luego se se instala el requirements y aunque finaliza con error queda bien instalado
 
 Se deben crear las siguientes variables de entorno para administrar la BD
