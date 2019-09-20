@@ -20,3 +20,6 @@ Se deben adicionar las siguientes variables de entorno para configurar el envio 
     "EMAIL_DESIGN_KEY":         Clave de acceso generada en AWS
     "EMAIL_DESIGN_SECRET_KEY":  Clave secreta generada en AWS
     "EMAIL_DESIGN_USER":        Cuenta de correo verificada en SES de AWS
+
+Para hacer la moontura del disco compartido: sudo mount -t nfs -o nolock,hard 172.31.37.147:/grupo01-n.lema /home/ec2-user/Grupo01/media
+Para verificar que quedo montado: df -hT
