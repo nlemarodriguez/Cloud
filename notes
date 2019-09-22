@@ -1,7 +1,7 @@
 Generate requeriments:  pip freeze > requirements.txt
 Install:                pip install -r requirements.txt
 Run:                    py manage.py runserver
-Run Ubuntu VM           nohup python3 manage.py runserver 0.0.0.0:8080 &
+Run Ubuntu VM           nohup python3 manage.py runserver 0.0.0.0:8000 &
 Instalar python en EC2 instance: sudo yum install python36 python36-pip
 crear el ambiente virtual: virtualenv -p python3 venv_Grupo01
 para instalar la libreria de postgres ejecute estos comandos:

@@ -245,9 +245,9 @@ def update_url(request):
 def upload_design(request):
     try:
         project = Project.objects.filter(name='Dia de la mujer')
-        state = State.objects.get(id=1)
+        state = State.objects.filter(name='En proceso')
         design = Design(value=1, designer_email='1@1.com', designer_last_name='apellido', designer_name='nombre',
-                        original_file='original/imagen-consciencia.jpg', state=state, project=project[0])
+                        original_file='original/imagen-consciencia.jpg', state=state[0], project=project[0])
         design.save()
         return HttpResponse(status=204)
     except Exception:
