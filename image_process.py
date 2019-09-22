@@ -47,7 +47,7 @@ for i in designs:
     # Obtener nombre de archivo
     file = '{}'.format(i['original_file'])
     position = file.index('.')
-    filename = file[9:position] +''+ now
+    filename = file[9:position]
     print(filename)
     # Se guarda nueva imagen
     img.save(settings.MEDIA_ROOT + '/process/' + filename + '.png')
