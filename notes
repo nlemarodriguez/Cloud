@@ -4,6 +4,8 @@ Run:                    py manage.py runserver
 Run Ubuntu VM           nohup python3 manage.py runserver 0.0.0.0:8000 &
 Instalar python en EC2 instance: sudo yum install python36 python36-pip
 crear el ambiente virtual: virtualenv -p python3 venv_Grupo01
+verificar git: sudo yum install git
+
 para instalar la libreria de postgres ejecute estos comandos:
     sudo yum install gcc python-setuptools python-devel postgresql-devel
     sudo easy_install psycopg2
@@ -21,5 +23,5 @@ Se deben adicionar las siguientes variables de entorno para configurar el envio 
     "EMAIL_DESIGN_SECRET_KEY":  Clave secreta generada en AWS
     "EMAIL_DESIGN_USER":        Cuenta de correo verificada en SES de AWS
 
-Para hacer la moontura del disco compartido: sudo mount -t nfs -o nolock,hard 172.31.37.147:/grupo01-n.lema /home/ec2-user/Grupo01/media
+Para hacer la moontura del disco compartido: sudo mount -t nfs -o nolock,hard 172.31.34.138:/grupo01-n.lema /home/ec2-user/Grupo01/media
 Para verificar que quedo montado: df -hT
