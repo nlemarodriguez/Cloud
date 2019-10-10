@@ -41,4 +41,7 @@ while design:
     design.process_file = 'process/' + filename + '.png'
     design.state = status
     design.save()
-    design = Design.objects.filter(process_file='')[0]
+    if Design.objects.filter(process_file=''):
+        design = Design.objects.filter(process_file='')[0]
+    else:
+        design = None
