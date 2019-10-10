@@ -6,12 +6,17 @@ import requests
 from PIL import Image, ImageDraw
 from rest_framework.utils import json
 from django.conf import settings
+from random import randint
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project_1.settings")
 django.setup()
 from designs.models import Company, Project, Design, State
 
-design = Design.objects.filter(process_file='')[0]
+
+count = Design.objects.filter(process_file='').count()-1
+random = randint(0, count)
+design = Design.objects.filter(process_file='')[count]
 while design:
+    design.process_file = '.'
     desired_size = 800
     img = Image.open(settings.MEDIA_ROOT + '/{}'.format(design.original_file))
 
@@ -42,6 +47,8 @@ while design:
     design.state = status
     design.save()
     if Design.objects.filter(process_file=''):
-        design = Design.objects.filter(process_file='')[0]
+        count = Design.objects.filter(process_file='').count() - 1
+        random = randint(0, count)
+        design = Design.objects.filter(process_file='')[count]
     else:
         design = None
