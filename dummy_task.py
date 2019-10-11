@@ -1,9 +1,7 @@
-from datetime import datetime
-import time
+from crontab import CronTab
 
-while True:
-    f = open("./logs/log", "a+")
-    now = datetime.now()
-    f.write("Hora: %a \r\n" % now.strftime("%d/%m/%Y %H:%M:%S"))
-    f.close()
-    time.sleep(5)
+my_cron = CronTab(user='ec2-user')
+job = my_cron.new(command='/home/ec2-user/crones/cron.sh >> /home/ec2-user/crones/myscript.log 2>&1')
+job.minute.every(1)
+
+my_cron.write()
