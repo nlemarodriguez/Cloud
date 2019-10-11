@@ -12,9 +12,18 @@ django.setup()
 from designs.models import Company, Project, Design, State
 
 
-count = Design.objects.filter(process_file='').count()-1
-random = randint(0, count)
-design = Design.objects.filter(process_file='')[count]
+def return_any_design():
+    contador = Design.objects.filter(process_file='').count()
+    if contador==0:
+        return None
+    elif contador==1:
+        return Design.objects.filter(process_file='')[0]
+    else:
+        random = randint(0, contador - 1)
+        return Design.objects.filter(process_file='')[random]
+
+design = return_any_design()
+
 while design:
     design.process_file = '.'
     desired_size = 800
@@ -46,9 +55,5 @@ while design:
     design.process_file = 'process/' + filename + '.png'
     design.state = status
     design.save()
-    if Design.objects.filter(process_file=''):
-        count = Design.objects.filter(process_file='').count() - 1
-        random = randint(0, count)
-        design = Design.objects.filter(process_file='')[count]
-    else:
-        design = None
+    design = return_any_design()
+
