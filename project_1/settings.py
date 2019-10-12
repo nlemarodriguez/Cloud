@@ -162,8 +162,8 @@ LOGIN_URL = 'signup'
 
 EMAIL_BACKEND = 'django_ses.SESBackend'
 
-AWS_ACCESS_KEY_ID  = os.environ["EMAIL_DESIGN_KEY"]
-AWS_SECRET_ACCESS_KEY = os.environ["EMAIL_DESIGN_SECRET_KEY"]
+AWS_ACCESS_KEY_ID  = os.environ["AWS_ACCESS_KEY_ID"]
+AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_STORAGE_BUCKET_NAME = 'modelo.d'
