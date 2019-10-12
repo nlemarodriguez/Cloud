@@ -9,6 +9,7 @@ from django.conf import settings
 from random import randint
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project_1.settings")
 django.setup()
+from django.core.mail import send_mail
 from designs.models import Company, Project, Design, State
 
 
@@ -55,5 +56,7 @@ while design:
     design.process_file = 'process/' + filename + '.png'
     design.state = status
     design.save()
+    send_mail('Diseño procesado', 'Tu diseño ha sido procesado! Ahora es visible para todos',
+              os.environ["EMAIL_DESIGN_USER"], [design.designer_email])
     design = return_any_design()
 
