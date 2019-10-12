@@ -27,6 +27,7 @@ design = return_any_design()
 
 while design:
     design.process_file = '.'
+    design.save()
     desired_size = 800
     img = Image.open(settings.MEDIA_ROOT + '/{}'.format(design.original_file))
 
