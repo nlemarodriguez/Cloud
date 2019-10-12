@@ -29,7 +29,7 @@ while design:
     design.process_file = '.'
     design.save()
     desired_size = 800
-    img = Image.open(settings.MEDIA_ROOT + '/{}'.format(design.original_file))
+    img = Image.open(design.original_file)
 
     # Se ajusta tamaño de la imagen
     old_size = img.size
@@ -50,14 +50,13 @@ while design:
     filename = file[9:position]
     print(filename)
     # Se guarda nueva imagen
-    img.save(settings.MEDIA_ROOT + '/process/' + filename + '.png')
+    #img.save(settings.MEDIA_ROOT + '/process/' + filename + '.png')
 
     status, created = State.objects.get_or_create(name='Disponible')
 
     design.process_file = 'process/' + filename + '.png'
     design.state = status
     design.save()
-    send_mail('Diseño procesado', 'Tu diseño ha sido procesado! Ahora es visible para todos',
-              os.environ["EMAIL_DESIGN_USER"], [design.designer_email])
+    #send_mail('Diseño procesado', 'Tu diseño ha sido procesado! Ahora es visible para todos', os.environ["EMAIL_DESIGN_USER"], [design.designer_email])
     design = return_any_design()
 

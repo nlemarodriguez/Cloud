@@ -137,7 +137,7 @@ AUTH_USER_MODEL = 'designs.CustomUser'
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 #MAIN_URL = 'http://127.0.0.1:8000/'
-MAIN_URL = os.environ["MAIN_URL"]
+#MAIN_URL = os.environ["MAIN_URL"]
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -164,3 +164,6 @@ EMAIL_BACKEND = 'django_ses.SESBackend'
 
 AWS_ACCESS_KEY_ID  = os.environ["EMAIL_DESIGN_KEY"]
 AWS_SECRET_ACCESS_KEY = os.environ["EMAIL_DESIGN_SECRET_KEY"]
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_STORAGE_BUCKET_NAME = 'modelo.d'
