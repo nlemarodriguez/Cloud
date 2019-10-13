@@ -15,6 +15,7 @@ from django.conf import settings
 from django.core.paginator import Paginator
 from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
+import boto3
 
 
 # Create your views here.
@@ -114,6 +115,16 @@ def nuevo_design(request, url, idproyecto):
             project = Project.objects.get(id=idproyecto)
             design.project = project
             design.save()
+            sqs = boto3.resource('sqs', region_name='us-east-1')
+            queue = sqs.get_queue_by_name(QueueName='modeloD-Cola')
+            response = queue.send_message(MessageBody='Id design to process', MessageAttributes={
+                'Id': {
+                    'StringValue': str(design.id),
+                    'DataType': 'Number'
+                }
+            })
+
+            print('response: '+response['MessageId'])
             request.method = 'GET'
             messages.info(request,
                           'Hemos recibido tu diseño y lo estamos procesado para que sea publicado. Tan pronto esto ocurra, te notificaremos por email')

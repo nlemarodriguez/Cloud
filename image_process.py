@@ -9,23 +9,34 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project_1.settings")
 django.setup()
 from django.core.mail import send_mail
 from designs.models import Company, Project, Design, State
+import boto3
+
+sqs = boto3.client('sqs', region_name='us-east-1')
+queue_url = 'https://sqs.us-east-1.amazonaws.com/155149968057/modeloD-Cola'
 
 
-def return_any_design():
-    contador = Design.objects.filter(process_file='').count()
-    if contador==0:
-        return None
-    elif contador==1:
-        return Design.objects.filter(process_file='')[0]
-    else:
-        random = randint(0, contador - 1)
-        return Design.objects.filter(process_file='')[random]
+while True:
 
-design = return_any_design()
+    # Receive message from SQS queue
+    response = sqs.receive_message(
+        QueueUrl=queue_url,
+        AttributeNames=[
+            'SentTimestamp'
+        ],
+        MaxNumberOfMessages=1,
+        MessageAttributeNames=[
+            'All'
+        ],
+        VisibilityTimeout=0,
+        WaitTimeSeconds=0
+    )
 
-while design:
-    design.process_file = '.'
-    design.save()
+    message = response['Messages'][0]
+    receipt_handle = message['ReceiptHandle']
+
+    id = message['MessageAttributes']['Id']['StringValue']
+    design = Design.objects.get(id=int(id))
+
     desired_size = 800
     img = Image.open(design.original_file)
 
@@ -59,5 +70,11 @@ while design:
     design.state = status
     design.save()
     send_mail('Diseño procesado', 'Tu diseño ha sido procesado! Ahora es visible para todos', os.environ["EMAIL_DESIGN_USER"], [design.designer_email])
-    design = return_any_design()
+    # Delete received message from queue
+    sqs.delete_message(
+         QueueUrl=queue_url,
+         ReceiptHandle=receipt_handle
+     )
+    time.sleep(10)
+
 
