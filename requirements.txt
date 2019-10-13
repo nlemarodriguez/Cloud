@@ -9,6 +9,7 @@ django-allauth==0.39.1
 django-ses==0.8.12
 django-storages==1.7.2
 djangorestframework==3.9.1
+djongo==1.2.36
 docutils==0.15.2
 future==0.17.1
 idna==2.8
