@@ -110,15 +110,15 @@
                                     <div class="col-lg-4 col-md-6 mb-4">
                                         <div class="card h-100">
                                             {% if d.state.name == 'En proceso' %}
-                                                <a href="../../../media/{{ d.original_file }}"><img width="100"
+                                                <a href="{{ d.original_file.url }}"><img width="100"
                                                                                                     height="100"
                                                                                                     class="card-img-top"
-                                                                                                    src="/media/{{ d.original_file }}"></a>
+                                                                                                    src="{{ d.original_file.url }}"></a>
                                             {% else %}
-                                                <a href="../../../media/{{ d.process_file }}"><img width="100"
+                                                <a href="{{ d.process_file.url }}"><img width="100"
                                                                                                    height="100"
                                                                                                    class="card-img-top"
-                                                                                                   src="/media/{{ d.process_file }}"></a>
+                                                                                                   src="{{ d.process_file.url }}"></a>
                                             {% endif %}
                                             <div class="card-body">
                                                 {% if company.owner == user %}
@@ -158,9 +158,9 @@
                                 {% for d in designs_designer %}
                                     <div class="col-lg-4 col-md-6 mb-4">
                                         <div class="card h-100">
-                                            <a href="../../../media/{{ d.process_file }}"><img width="100" height="100"
+                                            <a href="{{ d.process_file.url }}"><img width="100" height="100"
                                                                                                class="card-img-top"
-                                                                                               src="/media/{{ d.process_file }}"></a>
+                                                                                               src="{{ d.process_file.url }}"></a>
                                             <div class="card-footer">
                                                 <small class="text-muted">Subido: {{ d.created_date }}</small>
                                             </div>

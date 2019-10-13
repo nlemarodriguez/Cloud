@@ -4,6 +4,7 @@ import django
 from datetime import datetime
 import requests
 from PIL import Image, ImageDraw
+from django.db.models import ImageField
 from rest_framework.utils import json
 from django.conf import settings
 from random import randint
@@ -26,8 +27,8 @@ def return_any_design():
 design = return_any_design()
 
 while design:
-    design.process_file = '.'
-    design.save()
+    #design.process_file = '.'
+    #design.save()
     desired_size = 800
     img = Image.open(design.original_file)
 
@@ -50,13 +51,14 @@ while design:
     filename = file[9:position]
     print(filename)
     # Se guarda nueva imagen
-    #img.save(settings.MEDIA_ROOT + '/process/' + filename + '.png')
+    #img.save(settings. + '/process/' + filename + '.png')
+
 
     status, created = State.objects.get_or_create(name='Disponible')
 
-    design.process_file = 'process/' + filename + '.png'
+    design.process_file.save('process/' + filename + '.png', img) #= 'process/' + filename + '.png'
     design.state = status
     design.save()
-    #send_mail('Diseño procesado', 'Tu diseño ha sido procesado! Ahora es visible para todos', os.environ["EMAIL_DESIGN_USER"], [design.designer_email])
+    send_mail('Diseño procesado', 'Tu diseño ha sido procesado! Ahora es visible para todos', os.environ["EMAIL_DESIGN_USER"], [design.designer_email])
     design = return_any_design()
 
