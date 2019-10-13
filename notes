@@ -28,3 +28,5 @@ Para verificar que quedo montado: df -hT
 
 para instalar python en Amazon 2: https://gist.github.com/PabTorre/12f514f97688072d6a598f00707d4db4
                                     sudo yum install -y python3-devel.x86_64
+
+para poder guardar la imagen procesada en S3 https://discuss.hellowebapp.com/t/pillow-resizing-images-thumbnail-on-amazon-s3/460/2
