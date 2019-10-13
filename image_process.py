@@ -49,7 +49,7 @@ while design:
     print(filename)
     # Se guarda nueva imagen
     status, created = State.objects.get_or_create(name='Disponible')
-    process_url = 'process/' + filename + '.png'
+    process_url = filename + '.png'
     buffer = BytesIO()
     img.save(buffer, format='PNG')
     file_object = File(buffer)
