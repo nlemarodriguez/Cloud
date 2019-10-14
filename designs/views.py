@@ -16,6 +16,7 @@ from django.core.paginator import Paginator
 from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
 import boto3
+import requests
 
 
 # Create your views here.
@@ -179,15 +180,19 @@ def custom_login(request):
 def dowload_image(request, tipo, id):
     design = Design.objects.get(id=id)
     if tipo == 'original':
-        file_path = settings.BASE_DIR + design.original_file.url
+        file_path = settings.CLOUD_FRONT_URL + '/' + str(design.original_file)
     else:
-        file_path = settings.BASE_DIR + design.process_file.url
-    if os.path.exists(file_path):
-        with open(file_path, 'rb') as fh:
-            response = HttpResponse(fh.read(), content_type="application/")
-            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
-            return response
-    raise Http404
+        file_path = settings.CLOUD_FRONT_URL + '/' + str(design.process_file)
+    print(file_path)
+
+    # r = requests.get(file_path)  # create HTTP response object
+    # with open("python_logo.png", 'wb') as f:
+    #     f.write(r.content)
+
+    # with open(file_path, 'wb') as fh:
+    #     response = HttpResponse(fh.read(), content_type="application/")
+    #     response['Content-Disposition'] = 'inline; filename=' + file_path
+    #     return response
 
 
 # Trae todos los diseños con estado 'En proceso'

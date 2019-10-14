@@ -129,17 +129,23 @@
                                                     <p><b>Precio pedido:</b> {{ d.value }}</p>
                                                     <p><b>Estado:</b> {{ d.state.name }}</p>
                                                     <p><b>Archivo original:</b>
-                                                    <form method="get" action="/dowload_image/original/{{ d.id }}">
+                                                    <a class="btn" href="{{ cloud_front }}/{{ d.original_file }}" download>
+                                                        <i class="fa fa-download"></i> Descargar
+                                                    </a>
+                                                    {% comment %}<form method="get" action="/dowload_image/original/{{ d.id }}">
                                                         <button class="btn"><i class="fa fa-download"></i> Descargar
                                                         </button>
-                                                    </form>
+                                                    </form>{% endcomment %}
                                                     </p>
                                                     {% if d.state.name == 'Disponible' %}
                                                         <p><b>Archivo procesado:</b>
-                                                        <form method="get" action="/dowload_image/processed/{{ d.id }}">
+                                                        <a class="btn" href="{{ cloud_front }}/{{ d.process_file }}" download>
+                                                            <i class="fa fa-download"></i> Descargar
+                                                        </a>
+                                                        {% comment %}<form method="get" action="/dowload_image/processed/{{ d.id }}">
                                                             <button class="btn"><i class="fa fa-download"></i> Descargar
                                                             </button>
-                                                        </form>
+                                                        </form>{% endcomment %}
                                                         </p>
                                                     {% endif %}
                                                 {% endif %}
@@ -158,9 +164,9 @@
                                 {% for d in designs_designer %}
                                     <div class="col-lg-4 col-md-6 mb-4">
                                         <div class="card h-100">
-                                            <a href="{{ d.process_file.url }}"><img width="100" height="100"
+                                            <a href="{{ cloud_front }}/{{ d.process_file }}"><img width="100" height="100"
                                                                                                class="card-img-top"
-                                                                                               src="{{ d.process_file.url }}"></a>
+                                                                                               src="{{ cloud_front }}/{{ d.process_file }}"></a>
                                             <div class="card-footer">
                                                 <small class="text-muted">Subido: {{ d.created_date }}</small>
                                             </div>
