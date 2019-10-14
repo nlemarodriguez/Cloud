@@ -84,9 +84,12 @@ WSGI_APPLICATION = 'project_1.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': os.environ["BD_MONGO"],
-        'HOST': os.environ["BD_MONGO_HOST"]
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ["BD_DESIGN"],
+        'USER': os.environ["BD_DESIGN_USUARIO"],
+        'PASSWORD': os.environ["BD_DESIGN_PASSWORD"],
+        'HOST': os.environ["BD_DESIGN_HOST"],
+        'PORT': '5432'
     }
 }
 
