@@ -42,7 +42,7 @@ def empresa(request, url):
     print('url: ' + url)
     company = Company.objects.get(url=url)
     projects = Project.objects.filter(company=company)
-    return render(request, 'designs/empresa.html', {'company': company, 'projects': projects})
+    return render(request, 'designs/empresa.html', {'company': company, 'projects': projects, 'cloud_front': settings.CLOUD_FRONT_URL})
 
 
 # Recibe el proyecto y la empresa
@@ -73,7 +73,7 @@ def proyecto(request, url, idproyecto):
         return render(request, 'designs/empresa.html',
                       {'form_project': form_project, 'company': project.company, 'designs_owner': designs_owner,
                        'designs_designer': designs_designer, 'projects': projects, 'project': project,
-                       'design_form': design_form})
+                       'design_form': design_form, 'cloud_front': settings.CLOUD_FRONT_URL})
 
 
 def eliminar_proyecto(request, url, idproyecto):
@@ -98,7 +98,7 @@ def nuevo_proyecto(request, url):
     else:
         form_project = ProjectCreationForm()
         return render(request, 'designs/empresa.html',
-                      {'form_project': form_project, 'company': company, 'projects': projects})
+                      {'form_project': form_project, 'company': company, 'projects': projects, 'cloud_front': settings.CLOUD_FRONT_URL})
 
 
 @csrf_exempt
