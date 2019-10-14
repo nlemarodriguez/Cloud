@@ -82,7 +82,7 @@ while True:
                  ReceiptHandle=receipt_handle
              )
         except KeyError:
-            print('no tiene mensaje')
+            pass
     time.sleep(10)
 
 
