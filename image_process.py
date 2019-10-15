@@ -4,6 +4,7 @@ import django
 from datetime import datetime
 import requests
 from PIL import Image, ImageDraw
+from boto.ses.exceptions import SESDailyQuotaExceededError
 from rest_framework.utils import json
 from django.conf import settings
 from random import randint
@@ -57,6 +58,9 @@ while design:
     design.process_file = 'process/' + filename + '.png'
     design.state = status
     design.save()
-    #send_mail('Diseño procesado', 'Tu diseño ha sido procesado! Ahora es visible para todos', os.environ["EMAIL_DESIGN_USER"], [design.designer_email])
+    try:
+        send_mail('Diseño procesado', 'Tu diseño ha sido procesado! Ahora es visible para todos', os.environ["EMAIL_DESIGN_USER"], [design.designer_email])
+    except SESDailyQuotaExceededError:
+        print('capturo error')
     design = return_any_design()
 
