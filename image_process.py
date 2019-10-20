@@ -86,6 +86,6 @@ while True:
              )
         except KeyError:
             pass
-    time.sleep(10)
+    
 
 

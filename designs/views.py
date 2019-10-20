@@ -277,6 +277,14 @@ def upload_design(request):
         design = Design(value=1, designer_email='1@1.com', designer_last_name='apellido', designer_name='nombre',
                         original_file='original/imagen-consciencia.jpg', state=state[0], project=project[0])
         design.save()
+        sqs = boto3.resource('sqs', region_name='us-east-1')
+        queue = sqs.get_queue_by_name(QueueName=settings.AWS_QUEUE_NAME)
+        response = queue.send_message(MessageBody='Id design to process', MessageAttributes={
+            'Id': {
+                'StringValue': str(design.id),
+                'DataType': 'Number'
+            }
+        })
         return HttpResponse(status=204)
     except Exception:
         return HttpResponse(status=500)
