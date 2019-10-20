@@ -30,3 +30,5 @@ s3transfer==0.2.1
 six==1.12.0
 sqlparse==0.2.4
 urllib3==1.25.3
+django-redis==4.10.0
+redis==3.3.11
