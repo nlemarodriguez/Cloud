@@ -5,6 +5,9 @@ from PIL import Image, ImageDraw
 from django.core.files import File
 from io import BytesIO
 from random import randint
+
+from project_1 import settings
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project_1.settings")
 django.setup()
 from django.core.mail import send_mail
@@ -13,7 +16,7 @@ import boto3
 from botocore.exceptions import ClientError
 
 sqs = boto3.client('sqs', region_name='us-east-1')
-queue_url = os.environ["AWS_QUEUE_URL"]
+queue_url = settings.AWS_QUEUE_URL
 
 
 while True:
@@ -75,7 +78,7 @@ while True:
             design.process_file.save(process_url, file_object)
             design.state = status
             design.save()
-            send_mail('Diseño procesado', 'Tu diseño ha sido procesado! Ahora es visible para todos', os.environ["EMAIL_DESIGN_USER"], [design.designer_email])
+            send_mail('Diseño procesado', 'Tu diseño ha sido procesado! Ahora es visible para todos', settings.EMAIL_DESIGN_USER, [design.designer_email])
             # Delete received message from queue
             sqs.delete_message(
                  QueueUrl=queue_url,

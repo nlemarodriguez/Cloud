@@ -117,7 +117,7 @@ def nuevo_design(request, url, idproyecto):
             design.project = project
             design.save()
             sqs = boto3.resource('sqs', region_name='us-east-1')
-            queue = sqs.get_queue_by_name(QueueName=os.environ["AWS_QUEUE_NAME"])
+            queue = sqs.get_queue_by_name(QueueName=settings.AWS_QUEUE_NAME)
             response = queue.send_message(MessageBody='Id design to process', MessageAttributes={
                 'Id': {
                     'StringValue': str(design.id),
@@ -240,7 +240,7 @@ def put_designs(request):
 
 def send_email_designer(mail_designer):
     send_mail('Diseño procesado', 'Tu diseño ha sido procesado! Ahora es visible para todos',
-              os.environ["EMAIL_DESIGN_USER"], [mail_designer])
+              settings.EMAIL_DESIGN_USER, [mail_designer])
 
 
 def update_url(request):
