@@ -78,7 +78,7 @@ while True:
             design.process_file.save(process_url, file_object)
             design.state = status
             design.save()
-            send_mail('Diseño procesado', 'Tu diseño ha sido procesado! Ahora es visible para todos', settings.EMAIL_DESIGN_USER, [design.designer_email])
+            #send_mail('Diseño procesado', 'Tu diseño ha sido procesado! Ahora es visible para todos', settings.EMAIL_DESIGN_USER, [design.designer_email])
             # Delete received message from queue
             sqs.delete_message(
                  QueueUrl=queue_url,
@@ -86,6 +86,8 @@ while True:
              )
         except KeyError:
             pass
-    
+        except Exception:
+            pass
+
 
 
