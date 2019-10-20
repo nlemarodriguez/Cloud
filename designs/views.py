@@ -17,12 +17,12 @@ from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
 import boto3
 import requests
-
+from django.core.cache import cache
 
 # Create your views here.
 
 def home(request):
-    if request.user is not None:
+    if str(request.user.id) in cache:
         # Redirect to a success page.
         print('1')
         return render(request, 'designs/home.html')
@@ -34,8 +34,15 @@ def home(request):
 
 # Es el link del navbar que devuelve todas las empresas
 def empresas(request):
-    companies = Company.objects.all().order_by('-name')
-    return render(request, 'designs/empresas.html', {'companies': companies})
+    if 'empresas' in cache:
+        #print('estan en cache')
+        companies = cache.get('empresas')
+        return render(request, 'designs/empresas.html', {'companies': companies})
+    else:
+        #print('no estan cache')
+        companies = Company.objects.all().order_by('-name')
+        cache.set('empresas', companies)
+        return render(request, 'designs/empresas.html', {'companies': companies})
 
 
 # Es la empresa particular, solo cuando no ha seleccionado un proyecto
@@ -150,6 +157,10 @@ def registro(request):
             # Decidi usar el concecutivo con el id de la compania
             company.url = slugify(form_company.cleaned_data['name']) + str(company.id)
             company.save()
+            if 'empresas' in cache:
+                #print('cache registro')
+                companies = Company.objects.all().order_by('-name')
+                cache.set('empresas', companies)
             return redirect('home')
         else:
             print('paila')
@@ -169,6 +180,7 @@ def custom_login(request):
         password = request.POST.get('password')
         user = authenticate(email=email, password=password)
         if user:
+            cache.set(str(user.id), user.email, 3600)
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             company = Company.objects.get(owner=user)
             return empresa(request, company.url)

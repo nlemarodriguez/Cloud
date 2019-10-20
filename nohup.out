@@ -1,0 +1,42 @@
+System check identified some issues:
+
+WARNINGS:
+designs.CustomUser: (auth.W004) 'CustomUser.username' is named as the 'USERNAME_FIELD', but it is not unique.
+	HINT: Ensure that your authentication backend(s) can handle non-unique usernames.
+
+System check identified 1 issue (0 silenced).
+System check identified some issues:
+
+WARNINGS:
+designs.CustomUser: (auth.W004) 'CustomUser.username' is named as the 'USERNAME_FIELD', but it is not unique.
+	HINT: Ensure that your authentication backend(s) can handle non-unique usernames.
+
+System check identified 1 issue (0 silenced).
+System check identified some issues:
+
+WARNINGS:
+designs.CustomUser: (auth.W004) 'CustomUser.username' is named as the 'USERNAME_FIELD', but it is not unique.
+	HINT: Ensure that your authentication backend(s) can handle non-unique usernames.
+
+System check identified 1 issue (0 silenced).
+System check identified some issues:
+
+WARNINGS:
+designs.CustomUser: (auth.W004) 'CustomUser.username' is named as the 'USERNAME_FIELD', but it is not unique.
+	HINT: Ensure that your authentication backend(s) can handle non-unique usernames.
+
+System check identified 1 issue (0 silenced).
+System check identified some issues:
+
+WARNINGS:
+designs.CustomUser: (auth.W004) 'CustomUser.username' is named as the 'USERNAME_FIELD', but it is not unique.
+	HINT: Ensure that your authentication backend(s) can handle non-unique usernames.
+
+System check identified 1 issue (0 silenced).
+System check identified some issues:
+
+WARNINGS:
+designs.CustomUser: (auth.W004) 'CustomUser.username' is named as the 'USERNAME_FIELD', but it is not unique.
+	HINT: Ensure that your authentication backend(s) can handle non-unique usernames.
+
+System check identified 1 issue (0 silenced).

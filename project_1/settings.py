@@ -174,3 +174,13 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 CLOUD_FRONT_URL = os.environ["CLOUD_FRONT_URL"]
 AWS_QUEUE_URL = os.environ["AWS_QUEUE_URL"]
 AWS_QUEUE_NAME = os.environ["AWS_QUEUE_NAME"]
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": os.environ["REDIS_URL"],
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
