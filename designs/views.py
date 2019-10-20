@@ -117,7 +117,7 @@ def nuevo_design(request, url, idproyecto):
             design.project = project
             design.save()
             sqs = boto3.resource('sqs', region_name='us-east-1')
-            queue = sqs.get_queue_by_name(QueueName='modeloD-Cola')
+            queue = sqs.get_queue_by_name(QueueName=os.environ["AWS_QUEUE_NAME"])
             response = queue.send_message(MessageBody='Id design to process', MessageAttributes={
                 'Id': {
                     'StringValue': str(design.id),

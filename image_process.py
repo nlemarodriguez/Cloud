@@ -13,7 +13,7 @@ import boto3
 from botocore.exceptions import ClientError
 
 sqs = boto3.client('sqs', region_name='us-east-1')
-queue_url = 'https://sqs.us-east-1.amazonaws.com/155149968057/modeloD-Cola'
+queue_url = os.environ["AWS_QUEUE_URL"]
 
 
 while True:

@@ -171,3 +171,5 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 CLOUD_FRONT_URL = os.environ["CLOUD_FRONT_URL"]
+AWS_QUEUE_URL = os.environ["AWS_QUEUE_URL"]
+AWS_QUEUE_NAME = os.environ["AWS_QUEUE_NAME"]
