@@ -286,6 +286,7 @@ def upload_design(request):
             }
         })
         return HttpResponse(status=204)
-    except Exception:
+    except Exception as e:
+        print(e)
         return HttpResponse(status=500)
 
