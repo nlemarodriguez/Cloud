@@ -38,3 +38,11 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project_1.settings")
 django.setup()
 from django.core.cache import cache
 cache.get('empresas')
+
+Desplegar en heroku
+    heroku login
+Crear la app en Heroku, para este ejemplo la mia se llama entrega4-grupo01
+    heroku git:remote -a entrega4-grupo01
+    git add .
+    git commit -am "make it better"
+    git push heroku entrega4:master
