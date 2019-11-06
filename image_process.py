@@ -82,12 +82,13 @@ while True:
             design.state = status
             design.save()
 
-            sg = sendgrid.SendGridAPIClient(apikey=settings.SENDGRID_API_KEY)
+            sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
             from_email = Email(settings.EMAIL_DESIGN_USER)
             subject = "Diseño procesado"
             to_email = Email([design.designer_email])
             content = Content("text/plain", "Tu diseño ha sido procesado! Ahora es visible para todos")
             mail = Mail(from_email, subject, to_email, content)
+            response = sg.client.mail.send.post(request_body=mail.get())
 
             # Delete received message from queue
             sqs.delete_message(
