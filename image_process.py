@@ -86,7 +86,8 @@ while True:
                 from_email=settings.EMAIL_DESIGN_USER,
                 to_emails=design.designer_email,
                 subject='Diseño procesado',
-                html_content='<p>Tu diseño ha sido procesado! Ahora es visible para todos.</p>')
+                html_content='<p>Tu diseño ha sido procesado! <br> Ahora es visible para todos: '
+                             + design.project.company.url + '</p>')
 
             sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
             response = sg.send(message)
