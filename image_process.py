@@ -15,8 +15,8 @@ from designs.models import Company, Project, Design, State
 import boto3
 from botocore.exceptions import ClientError
 
-import sendgrid
-from sendgrid.helpers.mail import *
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 sqs = boto3.client('sqs', region_name='us-east-1')
 queue_url = settings.AWS_QUEUE_URL
@@ -82,13 +82,15 @@ while True:
             design.state = status
             design.save()
 
-            sg = sendgrid.SendGridAPIClient(apikey=settings.SENDGRID_API_KEY)
-            from_email = Email(settings.EMAIL_DESIGN_USER)
-            subject = "Diseño procesado"
-            to_email = Email(design.designer_email)
-            content = Content("text/plain", "Tu diseño ha sido procesado! Ahora es visible para todos")
-            mail = Mail(from_email, subject, to_email, content)
-            response = sg.client.mail.send.post(request_body=mail.get())
+            message = Mail(
+                from_email=settings.EMAIL_DESIGN_USER,
+                to_emails=design.designer_email,
+                subject='Diseño procesado',
+                html_content='<p>Tu diseño ha sido procesado! Ahora es visible para todos.</p>')
+
+            sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
+            response = sg.send(message)
+            print(response.status_code, response.body, response.headers)
 
             # Delete received message from queue
             sqs.delete_message(
