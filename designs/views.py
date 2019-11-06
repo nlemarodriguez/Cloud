@@ -17,13 +17,12 @@ from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
 import boto3
 import requests
-#from django.core.cache import cache
+from django.core.cache import cache
 
 # Create your views here.
 
 def home(request):
-    #if str(request.user.id) in cache:
-    if True:
+    if str(request.user.id) in cache:
         # Redirect to a success page.
         print('1')
         return render(request, 'designs/home.html')
@@ -35,15 +34,14 @@ def home(request):
 
 # Es el link del navbar que devuelve todas las empresas
 def empresas(request):
-    #if 'empresas' in cache:
-    if False:
+    if 'empresas' in cache:
         #print('estan en cache')
-        #companies = cache.get('empresas')
+        companies = cache.get('empresas')
         return render(request, 'designs/empresas.html', {'companies': companies})
     else:
         #print('no estan cache')
         companies = Company.objects.all().order_by('-name')
-        #cache.set('empresas', companies)
+        cache.set('empresas', companies)
         return render(request, 'designs/empresas.html', {'companies': companies})
 
 
@@ -159,10 +157,10 @@ def registro(request):
             # Decidi usar el concecutivo con el id de la compania
             company.url = slugify(form_company.cleaned_data['name']) + str(company.id)
             company.save()
-            #if 'empresas' in cache:
+            if 'empresas' in cache:
                 #print('cache registro')
-             #   companies = Company.objects.all().order_by('-name')
-              #  cache.set('empresas', companies)
+                companies = Company.objects.all().order_by('-name')
+                cache.set('empresas', companies)
             return redirect('home')
         else:
             print('paila')
@@ -182,7 +180,7 @@ def custom_login(request):
         password = request.POST.get('password')
         user = authenticate(email=email, password=password)
         if user:
-            #cache.set(str(user.id), user.email, 3600)
+            cache.set(str(user.id), user.email, 3600)
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             company = Company.objects.get(owner=user)
             return empresa(request, company.url)
@@ -291,4 +289,3 @@ def upload_design(request):
     except Exception as e:
         print(e)
         return HttpResponse(status=500)
-
