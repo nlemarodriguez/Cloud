@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'hirefire.contrib.django.middleware.HireFireMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -163,7 +164,7 @@ EMAIL_BACKEND = 'django_ses.SESBackend'
 EMAIL_DESIGN_USER = os.environ["EMAIL_DESIGN_USER"]
 SENDGRID_API_KEY = os.environ["SENDGRID_API_KEY"]
 
-AWS_ACCESS_KEY_ID  = os.environ["AWS_ACCESS_KEY_ID"]
+AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
 AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
 AWS_STORAGE_BUCKET_NAME = os.environ["AWS_STORAGE_BUCKET_NAME"]
 AWS_DEFAULT_ACL = None
@@ -174,8 +175,14 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 CLOUD_FRONT_URL = os.environ["CLOUD_FRONT_URL"]
+
 AWS_QUEUE_URL = os.environ["AWS_QUEUE_URL"]
 AWS_QUEUE_NAME = os.environ["AWS_QUEUE_NAME"]
+
+HIREFIRE_TOKEN = os.environ["HIREFIRE_TOKEN"]
+HIREFIRE_PROCS = ['procs.WorkerProc']
+BROKER_URL = "sqs://{aws_access_key}:{aws_secret_key}@".format(aws_access_key=AWS_ACCESS_KEY_ID,
+                                                               aws_secret_key=AWS_SECRET_ACCESS_KEY)
 
 CACHES = {
     'default': {
