@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from kombu.utils.url import quote
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -181,7 +182,7 @@ AWS_QUEUE_NAME = os.environ["AWS_QUEUE_NAME"]
 
 HIREFIRE_TOKEN = os.environ["HIREFIRE_TOKEN"]
 HIREFIRE_PROCS = ['procs.WorkerProc']
-BROKER_BACKEND = 'SQS'
+BROKER_BACKEND = 'sqs'
 BROKER_URL = 'sqs://{aws_access_key}:{aws_secret_key}@'.format(aws_access_key=AWS_ACCESS_KEY_ID,
                                                                aws_secret_key=AWS_SECRET_ACCESS_KEY)
 BROKER_TRANSPORT_OPTIONS = {
@@ -191,8 +192,8 @@ BROKER_TRANSPORT_OPTIONS = {
     # Number of seconds to sleep between unsuccessful polls,
     # default value is 30 seconds
 }
-CELERY_BROKER_URL = 'sqs://{aws_access_key}:{aws_secret_key}@'.format(aws_access_key=AWS_ACCESS_KEY_ID,
-                                                                      aws_secret_key=AWS_SECRET_ACCESS_KEY)
+CELERY_BROKER_URL = 'sqs://{aws_access_key}:{aws_secret_key}@'.format(aws_access_key=quote(AWS_ACCESS_KEY_ID),
+                                                                      aws_secret_key=quote(AWS_SECRET_ACCESS_KEY))
 CELERY_DEFAULT_QUEUE = os.environ["AWS_QUEUE_NAME"]
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
