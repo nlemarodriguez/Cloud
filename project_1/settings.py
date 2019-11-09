@@ -179,20 +179,21 @@ CLOUD_FRONT_URL = os.environ["CLOUD_FRONT_URL"]
 AWS_QUEUE_URL = os.environ["AWS_QUEUE_URL"]
 AWS_QUEUE_NAME = os.environ["AWS_QUEUE_NAME"]
 
-
 HIREFIRE_TOKEN = os.environ["HIREFIRE_TOKEN"]
 HIREFIRE_PROCS = ['procs.WorkerProc']
 BROKER_BACKEND = 'SQS'
-BROKER_URL = 'sqs://{aws_access_key}:{aws_secret_key}@'.format(aws_access_key=AWS_ACCESS_KEY_ID,
-                                                               aws_secret_key=AWS_SECRET_ACCESS_KEY)
+BROKER_URL = 'sqs://{aws_access_key}:{aws_secret_key}@{aws_queue_url}'.format(aws_access_key=AWS_ACCESS_KEY_ID,
+                                                                              aws_secret_key=AWS_SECRET_ACCESS_KEY,
+                                                                              aws_queue_url=AWS_QUEUE_URL)
 BROKER_TRANSPORT_OPTIONS = {
     'region': 'us-east-1',
     'polling_interval': 60,
+    'visibility_timeout': 18000,
     # Number of seconds to sleep between unsuccessful polls,
     # default value is 30 seconds
 }
-CELERY_BROKER_URL = 'sqs://{aws_access_key}:{aws_secret_key}@localhost//'.format(aws_access_key=AWS_ACCESS_KEY_ID,
-                                                                                 aws_secret_key=AWS_SECRET_ACCESS_KEY)
+CELERY_BROKER_URL = 'sqs://{aws_access_key}:{aws_secret_key}@'.format(aws_access_key=AWS_ACCESS_KEY_ID,
+                                                                      aws_secret_key=AWS_SECRET_ACCESS_KEY)
 CELERY_DEFAULT_QUEUE = os.environ["AWS_QUEUE_NAME"]
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
