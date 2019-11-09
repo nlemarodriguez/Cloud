@@ -182,9 +182,8 @@ AWS_QUEUE_NAME = os.environ["AWS_QUEUE_NAME"]
 HIREFIRE_TOKEN = os.environ["HIREFIRE_TOKEN"]
 HIREFIRE_PROCS = ['procs.WorkerProc']
 BROKER_BACKEND = 'SQS'
-BROKER_URL = 'sqs://{aws_access_key}:{aws_secret_key}@{aws_queue_url}'.format(aws_access_key=AWS_ACCESS_KEY_ID,
-                                                                              aws_secret_key=AWS_SECRET_ACCESS_KEY,
-                                                                              aws_queue_url=AWS_QUEUE_URL)
+BROKER_URL = 'sqs://{aws_access_key}:{aws_secret_key}@'.format(aws_access_key=AWS_ACCESS_KEY_ID,
+                                                               aws_secret_key=AWS_SECRET_ACCESS_KEY)
 BROKER_TRANSPORT_OPTIONS = {
     'region': 'us-east-1',
     'polling_interval': 60,
