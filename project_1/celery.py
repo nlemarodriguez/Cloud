@@ -22,17 +22,19 @@ app.config_from_object('django.conf:settings')
 app.autodiscover_tasks()
 
 
-app.conf.beat_schedule = {
-    'display_time-30-seconds': {
-        'task': 'designs.tasks.display_time',
-        'schedule': 10.0
-    },
-}
+# app.conf.beat_schedule = {
+#     'display_time-30-seconds': {
+#         'task': 'designs.tasks.display_time',
+#         'schedule': 10.0
+#     },
+# }
 
 
 @app.task(bind=True)
 def debug_task(self):
     pass
+    # print('********************HELLO WORLD')
+    # print('Request: {0!r}'.format(self.request))
     # try:
     #     # Receive message from SQS queue
     #     response = sqs.receive_message(
