@@ -138,7 +138,7 @@ def nuevo_design(request, url, idproyecto):
             byte_message = base64.b64encode(message_string.encode('utf-8'))
             base64_json_string = byte_message.decode()
 
-            response = queue.send_message(MessageBody='Id design to process', MessageAttributes=base64_json_string)
+            response = queue.send_message(MessageBody=base64_json_string)
 
             print('response: '+response['MessageId'])
             request.method = 'GET'
