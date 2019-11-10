@@ -185,6 +185,7 @@ HIREFIRE_PROCS = ['procs.WorkerProc']
 BROKER_BACKEND = 'sqs'
 BROKER_URL = 'sqs://{aws_access_key}:{aws_secret_key}@'.format(aws_access_key=AWS_ACCESS_KEY_ID,
                                                                aws_secret_key=AWS_SECRET_ACCESS_KEY)
+# BROKER_URL = 'sqs://'
 BROKER_TRANSPORT_OPTIONS = {
     'region': 'us-east-1',
     'polling_interval': 60,
@@ -192,8 +193,8 @@ BROKER_TRANSPORT_OPTIONS = {
     # Number of seconds to sleep between unsuccessful polls,
     # default value is 30 seconds
 }
-CELERY_BROKER_URL = 'sqs://{aws_access_key}:{aws_secret_key}@'.format(aws_access_key=quote(AWS_ACCESS_KEY_ID),
-                                                                      aws_secret_key=quote(AWS_SECRET_ACCESS_KEY))
+CELERY_BROKER_URL = 'sqs://{aws_access_key}:{aws_secret_key}@'.format(aws_access_key=AWS_ACCESS_KEY_ID,
+                                                                      aws_secret_key=AWS_SECRET_ACCESS_KEY)
 CELERY_DEFAULT_QUEUE = os.environ["AWS_QUEUE_NAME"]
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
@@ -201,6 +202,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_CONTENT_ENCODING = 'utf-8'
 CELERY_ENABLE_REMOTE_CONTROL = False
 CELERY_SEND_EVENTS = False
+# CELERY_RESULT_BACKEND = None
 # Reason why we need the above is explained in Configuration Gotchas section.
 SQS_QUEUE_NAME = os.environ["AWS_QUEUE_NAME"]
 
