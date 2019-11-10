@@ -1,3 +1,5 @@
+import base64
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from rest_framework.decorators import api_view
@@ -125,12 +127,18 @@ def nuevo_design(request, url, idproyecto):
             design.save()
             sqs = boto3.resource('sqs', region_name='us-east-1')
             queue = sqs.get_queue_by_name(QueueName=settings.AWS_QUEUE_NAME)
-            response = queue.send_message(MessageBody='Id design to process', MessageAttributes={
+
+            message = {
                 'Id': {
                     'StringValue': str(design.id),
                     'DataType': 'Number'
                 }
-            })
+            }
+            message_string = json.dumps(message)
+            byte_message = base64.b64encode(message_string.encode('utf-8'))
+            base64_json_string = byte_message.decode()
+
+            response = queue.send_message(MessageBody='Id design to process', MessageAttributes=base64_json_string)
 
             print('response: '+response['MessageId'])
             request.method = 'GET'
