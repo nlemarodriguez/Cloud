@@ -32,8 +32,7 @@ app.conf.beat_schedule = {
 
 @app.task(bind=True)
 def debug_task(self):
-    print('********************HELLO WORLD')
-    print('Request: {0!r}'.format(self.request))
+    pass
     # try:
     #     # Receive message from SQS queue
     #     response = sqs.receive_message(
