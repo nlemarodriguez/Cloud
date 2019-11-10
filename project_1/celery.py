@@ -31,8 +31,9 @@ app.autodiscover_tasks()
 
 
 @app.task(bind=True)
-def debug_task(self):
-    pass
+def debug_task(self, message):
+    print(message)
+    return True
     # print('********************HELLO WORLD')
     # print('Request: {0!r}'.format(self.request))
     # try:
