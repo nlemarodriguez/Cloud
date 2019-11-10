@@ -1,4 +1,6 @@
 import base64
+import datetime
+import uuid
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
@@ -128,11 +130,20 @@ def nuevo_design(request, url, idproyecto):
             sqs = boto3.resource('sqs', region_name='us-east-1')
             queue = sqs.get_queue_by_name(QueueName=settings.AWS_QUEUE_NAME)
 
-            message = {
+            message1 = {
                 'Id': {
                     'StringValue': str(design.id),
                     'DataType': 'Number'
                 }
+            }
+
+            message = {
+                'task': 'debug_task',
+                'id': str(uuid.uuid4()),
+                'args': [message1],
+                "kwargs": {},
+                "retries": 0,
+                "eta": str(datetime.datetime.now())
             }
             message_string = json.dumps(message)
             byte_message = base64.b64encode(message_string.encode('utf-8'))
