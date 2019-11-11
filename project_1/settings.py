@@ -189,7 +189,7 @@ BROKER_URL = 'sqs://{aws_access_key}:{aws_secret_key}@'.format(aws_access_key=AW
 BROKER_TRANSPORT_OPTIONS = {
     'region': 'us-east-1',
     'polling_interval': 60,
-    'visibility_timeout': 18000,
+    # 'visibility_timeout': 30,
     # Number of seconds to sleep between unsuccessful polls,
     # default value is 30 seconds
 }

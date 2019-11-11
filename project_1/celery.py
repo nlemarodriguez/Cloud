@@ -30,7 +30,7 @@ app.autodiscover_tasks()
 # }
 
 
-@task(serializer='json', name='debug_task')
+@app.task(serializer='json', name='debug_task')
 def debug_task(self, message):
     print(message)
     return True
