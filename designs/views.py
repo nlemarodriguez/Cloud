@@ -140,7 +140,7 @@ def nuevo_design(request, url, idproyecto):
             message = {
                 'task': 'debug_task',
                 'id': str(uuid.uuid4()),
-                'args': [message1],
+                'args': [str(design.id)],
                 "kwargs": {},
                 "retries": 0,
                 "eta": str(datetime.datetime.now())

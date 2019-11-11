@@ -1,7 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 import os
 import django
-from celery import Celery
+from celery import Celery, task
 from project_1 import settings
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project_1.settings")
 #django.setup()
@@ -30,7 +30,7 @@ app.autodiscover_tasks()
 # }
 
 
-@app.task(bind=True)
+@task(serializer='json', name='debug_task')
 def debug_task(self, message):
     print(message)
     return True
