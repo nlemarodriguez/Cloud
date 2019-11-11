@@ -195,13 +195,14 @@ BROKER_TRANSPORT_OPTIONS = {
 }
 CELERY_BROKER_URL = 'sqs://{aws_access_key}:{aws_secret_key}@'.format(aws_access_key=AWS_ACCESS_KEY_ID,
                                                                       aws_secret_key=AWS_SECRET_ACCESS_KEY)
-CELERY_DEFAULT_QUEUE = os.environ["AWS_QUEUE_NAME"]
+CELERY_DEFAULT_QUEUE = 'PRUEBA' # os.environ["AWS_QUEUE_NAME"]
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_CONTENT_ENCODING = 'utf-8'
 CELERY_ENABLE_REMOTE_CONTROL = False
 CELERY_SEND_EVENTS = False
+CELERY_TASK_PROTOCOL = 1
 # CELERY_RESULT_BACKEND = None
 # Reason why we need the above is explained in Configuration Gotchas section.
 SQS_QUEUE_NAME = os.environ["AWS_QUEUE_NAME"]

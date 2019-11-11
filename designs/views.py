@@ -4,6 +4,7 @@ import uuid
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from kombu import Connection
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import NotFound
 from rest_framework.utils import json
@@ -138,20 +139,38 @@ def nuevo_design(request, url, idproyecto):
             }
 
             message = {
-                'task': 'debug_task',
                 'id': str(uuid.uuid4()),
+                'task': 'debug_task',
                 'args': [str(design.id)],
                 "kwargs": {},
                 "retries": 0,
                 "eta": str(datetime.datetime.now())
             }
+
+
             message_string = json.dumps(message)
             byte_message = base64.b64encode(message_string.encode('utf-8'))
             base64_json_string = byte_message.decode()
 
-            response = queue.send_message(MessageBody=base64_json_string)
+            with Connection(settings.BROKER_URL) as conn:
+                queue = conn.SimpleQueue('PRUEBA')
+                message = {
+                    'id': str(uuid.uuid4()),
+                    'task': 'debug_task',
+                    'args': [str(design.id)],
+                    "kwargs": {},
+                    "retries": 0,
+                    "eta": str(datetime.datetime.now())
+                }
+                print('****************************')
+                print(message)
+                queue.put(message)
+                print('****************************')
+                queue.close()
 
-            print('response: '+response['MessageId'])
+           # response = queue.send_message(MessageBody=base64_json_string)
+
+           # print('response: '+response['MessageId'])
             request.method = 'GET'
             messages.info(request,
                           'Hemos recibido tu diseño y lo estamos procesado para que sea publicado. Tan pronto esto ocurra, te notificaremos por email')
