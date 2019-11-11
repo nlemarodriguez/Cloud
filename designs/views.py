@@ -130,47 +130,13 @@ def nuevo_design(request, url, idproyecto):
             design.save()
             sqs = boto3.resource('sqs', region_name='us-east-1')
             queue = sqs.get_queue_by_name(QueueName=settings.AWS_QUEUE_NAME)
-
-            message1 = {
+            response = queue.send_message(MessageBody='Id design to process', MessageAttributes={
                 'Id': {
                     'StringValue': str(design.id),
                     'DataType': 'Number'
                 }
-            }
-
-            message = {
-                'id': str(uuid.uuid4()),
-                'task': 'debug_task',
-                'args': [str(design.id)],
-                "kwargs": {},
-                "retries": 0,
-                "eta": str(datetime.datetime.now())
-            }
-
-
-            message_string = json.dumps(message)
-            byte_message = base64.b64encode(message_string.encode('utf-8'))
-            base64_json_string = byte_message.decode()
-
-            with Connection(settings.BROKER_URL) as conn:
-                queue = conn.SimpleQueue('PRUEBA')
-                message = {
-                    'id': str(uuid.uuid4()),
-                    'task': 'debug_task',
-                    'args': [str(design.id)],
-                    "kwargs": {},
-                    "retries": 0,
-                    "eta": str(datetime.datetime.now())
-                }
-                print('****************************')
-                print(message)
-                queue.put(message)
-                print('****************************')
-                queue.close()
-
-           # response = queue.send_message(MessageBody=base64_json_string)
-
-           # print('response: '+response['MessageId'])
+            })
+            print('response: '+response['MessageId'])
             request.method = 'GET'
             messages.info(request,
                           'Hemos recibido tu diseño y lo estamos procesado para que sea publicado. Tan pronto esto ocurra, te notificaremos por email')
