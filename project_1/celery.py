@@ -32,7 +32,7 @@ app.autodiscover_tasks()
 
 @app.task(serializer='json', name='debug_task')
 def debug_task(self, message):
-    print(message)
+    print('MENSAJE ES' + message)
     return True
     # print('********************HELLO WORLD')
     # print('Request: {0!r}'.format(self.request))
