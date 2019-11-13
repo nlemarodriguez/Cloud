@@ -312,4 +312,4 @@ def hirefire_info(request, token):
         'name': 'worker',
         'quantity': cantidad,
     }
-    return JsonResponse(datos)
+    return JsonResponse([datos], safe=False)
