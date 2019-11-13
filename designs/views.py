@@ -1,7 +1,6 @@
 import base64
-import datetime
 import uuid
-
+from datetime import datetime, timedelta
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from kombu import Connection
@@ -297,17 +296,24 @@ def upload_design(request):
 
 
 def hirefire_info(request, token):
-    sqs = boto3.resource('sqs', region_name='us-east-1')
-    q = sqs.get_queue_by_name(QueueName=settings.AWS_QUEUE_NAME)
+    cloudwatch = boto3.client('cloudwatch', region_name='us-east-1')
+    response = cloudwatch.get_metric_statistics(
+        Period=300,
+        StartTime=datetime.utcnow() - timedelta(seconds=300),
+        EndTime=datetime.utcnow(),
+        MetricName='ApproximateNumberOfMessagesVisible',
+        Namespace='AWS/SQS',
+        Statistics=['Average', ],
+        Dimensions=[
+            {
+                'Name': 'QueueName',
+                'Value': 'modeloD-Cola'
+            },
+        ],
+    )
 
-    all_messages = []
-    rs = q.receive_messages(MaxNumberOfMessages=10, VisibilityTimeout=10)
-    while len(rs) > 0:
-        all_messages.extend(rs)
-        rs = q.receive_messages(MaxNumberOfMessages=10, VisibilityTimeout=10)
-    # Process messages by printing out body
-    #cantidad = sum([1 for _ in queue.receive_messages(MaxNumberOfMessages=10, VisibilityTimeout=0)])
-    cantidad = len(all_messages)
+    print(response['Datapoints'][0]['Average'])
+    cantidad = int(response['Datapoints'][0]['Average'])
     datos = {
         'name': 'worker',
         'quantity': cantidad,
