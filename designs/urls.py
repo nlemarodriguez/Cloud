@@ -20,4 +20,5 @@ urlpatterns = [
     path('disenos/', views.get_designs, name='disenos'),
     path('diseno-act/', views.put_designs, name='diseno-act'),
     path('upload_design/', views.upload_design, name='diseno-act'),
+    path('hirefire/<str:token>/info', views.hirefire_info, name='diseno-act'),
 ]

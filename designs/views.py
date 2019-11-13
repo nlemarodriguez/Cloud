@@ -23,6 +23,7 @@ from django.views.decorators.csrf import csrf_exempt
 import boto3
 import requests
 from django.core.cache import cache
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -293,3 +294,22 @@ def upload_design(request):
     except Exception as e:
         print(e)
         return HttpResponse(status=500)
+
+
+def hirefire_info(request, token):
+    sqs = boto3.resource('sqs', region_name='us-east-1')
+    q = sqs.get_queue_by_name(QueueName=settings.AWS_QUEUE_NAME)
+
+    all_messages = []
+    rs = q.receive_messages(MaxNumberOfMessages=10, VisibilityTimeout=10)
+    while len(rs) > 0:
+        all_messages.extend(rs)
+        rs = q.receive_messages(MaxNumberOfMessages=10, VisibilityTimeout=10)
+    # Process messages by printing out body
+    #cantidad = sum([1 for _ in queue.receive_messages(MaxNumberOfMessages=10, VisibilityTimeout=0)])
+    cantidad = len(all_messages)
+    datos = {
+        'name': 'worker',
+        'quantity': cantidad,
+    }
+    return JsonResponse(datos)

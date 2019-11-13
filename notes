@@ -46,3 +46,7 @@ Crear la app en Heroku, para este ejemplo la mia se llama entrega4-grupo01
     git add .
     git commit -am "make it better"
     git push heroku entrega4:master
+
+Para detener procesos corriendoe en heroku
+    heroku ps
+    heroku ps:stop scheduler.6318
