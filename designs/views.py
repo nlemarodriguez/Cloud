@@ -298,12 +298,12 @@ def upload_design(request):
 def hirefire_info(request, token):
     cloudwatch = boto3.client('cloudwatch', region_name='us-east-1')
     response = cloudwatch.get_metric_statistics(
-        Period=300,
+        Period=60,
         StartTime=datetime.utcnow() - timedelta(seconds=300),
         EndTime=datetime.utcnow(),
         MetricName='ApproximateNumberOfMessagesVisible',
         Namespace='AWS/SQS',
-        Statistics=['Average', ],
+        Statistics=['Average', 'Maximum', 'Sum',],
         Dimensions=[
             {
                 'Name': 'QueueName',
@@ -311,7 +311,7 @@ def hirefire_info(request, token):
             },
         ],
     )
-
+    print(response)
     print(response['Datapoints'][0]['Average'])
     cantidad = int(response['Datapoints'][0]['Average'])
     datos = {
