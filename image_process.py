@@ -87,7 +87,7 @@ while True:
                 to_emails=design.designer_email,
                 subject='Diseño procesado',
                 html_content='<p>Tu diseño ha sido procesado! <br><br> Ahora es visible para todos: '
-                             '<a href=http://entrega4-grupo1.herokuapp.com/empresas/' + design.project.company.url + '/' + design.project.id + 
+                             '<a href=http://entrega4-grupo1.herokuapp.com/empresas/' + design.project.company.url + '/' + str(design.project.id) +
                              '> Ver proyecto </a> </p>')
 
             sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
